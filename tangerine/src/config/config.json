@@ -1,5 +1,8 @@
 {
     "server": {
         "port": 42069
+    },
+    "google": {
+        "api_key": "AIzaSyAlmVIf4j_kl6NLPeZgn-uY-tDxNrXlcwo"
     }
 }
