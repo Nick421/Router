@@ -4,14 +4,30 @@ import { Button, IconName } from "@blueprintjs/core"
 
 const bgImg = require("./images/city-span-down.jpg")
 
+function demoAsyncCall() {
+    return new Promise((resolve) => setTimeout(() => resolve(), 2500));
+}
+
 class Home extends React.Component {
+    state = {
+        loading: true
+    };
+
+    componentDidMount() {
+        // this simulates an async action, after which the component will render the content
+        demoAsyncCall().then(() => this.setState({ loading: false }));
+    }
+
     redirectHandler = () => {
         console.log("redir");
         this.props.history.push("/map");
     }
 
     render() {
-
+        const { loading } = this.state;
+        if(loading) {
+            return null;
+        }
         return (
             <div className="h-full overflow-x-hidden">
                 <section className="flex flex-col items-center justify-center h-screen">

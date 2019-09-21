@@ -1,18 +1,11 @@
-<<<<<<< HEAD
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/tailwind.css';
 import "@blueprintjs/core/lib/css/blueprint.css";
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-=======
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-wrapper";
 import config from "./auth_config.json";
->>>>>>> 70066711d4363eb61695ac44abbafa76c0920a8f
 
 // A function that routes the user to the right place
 // after login
