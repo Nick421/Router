@@ -1,0 +1,22 @@
+{
+  "Application": {
+    "Name": "Routeboxer",
+    "Domain": "dev-vd2rp90l.au.auth0.com",
+    "ClientID": "p3KAhrj05EzLrxCAjHBeKQEJh8xQbQud",
+    "Client_Secret": "wifkir8DbY116rXR42idxUOpUeZa2xYVkSScvP6E8M-9Xgi8b_ArzfBMbMPiGR_E",
+    "Allowed_Callback_URLs": "http://localhost:3000,http://localhost:3000/complete/auth0, http://127.0.0.1:8000/complete/auth0",
+    "Allowed_Web_Origins": "http://localhost:3000, http://127.0.0.1:8000",
+    "Allowed_Logout_URLs": "http://localhost:3000",
+    "JWT_Expiration": "36000"
+  },
+  "API": {
+    "ID": "5d8b50c449ea7107171ce918",
+    "Name": "Django API",
+    "Identifier": "https://quickstarts/api",
+    "Token_Settings": {
+      "Token_expiration": "86400",
+      "Token_expiration_for_browser_flows": "7200",
+      "Signing_Algorithm": "RS256"
+    }
+  }
+}
