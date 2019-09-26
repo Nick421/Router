@@ -1,5 +1,0 @@
-{
-    "git.ignoreLimitWarning": true,
-    "python.pythonPath": "C:\\Users\\Merrimack\\envs\\elec_django\\Scripts\\python.exe",
-    "python.formatting.provider": "black"
-}
