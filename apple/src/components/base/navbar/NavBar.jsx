@@ -11,7 +11,7 @@ const NavBar = () => {
     return (
         <Navbar className={Classes.DARK} style={navbarStyle}>
             <Navbar.Group align={Alignment.LEFT}>
-                <Navbar.Heading className="text-white-100">Tangarine</Navbar.Heading>
+                <Navbar.Heading className="text-white-100">Tangerine</Navbar.Heading>
             </Navbar.Group>
             <Navbar.Group align={Alignment.RIGHT}>
             <Button className={Classes.MINIMAL} icon={IconNames.LOG_OUT} onClick={auth.userLogout}/>
