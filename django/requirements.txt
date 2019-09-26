@@ -1,1 +1,6 @@
-Django==2.2.5
+django
+djangorestframework
+djangorestframework-jwt
+cryptography
+pyjwt
+python-dotenv
