@@ -137,7 +137,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-jsonurl = request.urlopen("https://dev-vd2rp90l.au.auth0.com/.well-known/jwks.json")
+jsonurl = request.urlopen("https://dngu4013.au.auth0.com/.well-known/jwks.json")
 jwks = json.loads(jsonurl.read())
 cert = (
     "-----BEGIN CERTIFICATE-----\n"
@@ -152,7 +152,7 @@ JWT_AUTH = {
     "JWT_PAYLOAD_GET_USERNAME_HANDLER": "auth0authorization.user.jwt_get_username_from_payload_handler",
     "JWT_PUBLIC_KEY": publickey,
     "JWT_ALGORITHM": "RS256",
-    "JWT_AUDIENCE": "https://quickstarts/api",
-    "JWT_ISSUER": "https://" + "dev-vd2rp90l.au.auth0.com" + "/",
+    "JWT_AUDIENCE": "https://auth0.route.boxer",
+    "JWT_ISSUER": "https://" + "dngu4013.au.auth0.com" + "/",
     "JWT_AUTH_HEADER_PREFIX": "Bearer",
 }
