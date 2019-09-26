@@ -12,6 +12,7 @@ export default class AppRouter extends React.PureComponent {
     
     render(){
         if(this.state.authenticated) {
+            console.log(auth.getAccessToken());
             return (
                 <Router>
                     <div>
