@@ -1,2 +1,12 @@
 # Ignore folder named 'venv'
 venv/
+bin/
+lib/
+pyvenv.cfg
+django/config/__pycache__/__init__.cpython-36.pyc
+django/config/__pycache__/settings.cpython-36.pyc
+django/config/__pycache__/urls.cpython-36.pyc
+django/server/__pycache__/__init__.cpython-36.pyc
+django/server/__pycache__/urls.cpython-36.pyc
+django/server/__pycache__/views.cpython-36.pyc
+django/pip-selfcheck.json
