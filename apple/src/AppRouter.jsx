@@ -2,17 +2,43 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import MapComponent from "./components/map/MapComponent" ;
 import Home from "./components/home/Home";
-import Profile from "./components/user/Profile";
-import PrivateRoute from "./components/routing/PrivateRoute";
+import * as auth from "./services/auth0/auth0";
 
-export default function AppRouter() {
-    return (
-        <Router>
-            <div>
-                <Route exact path = "/" component = {Home} />
-                <Route path = "/map" component = {MapComponent} />
-                <PrivateRoute path="/profile" component={Profile} />
-            </div>
-        </Router>
-    );
+export default class AppRouter extends React.PureComponent {
+    constructor() {
+        super();
+        this.state = { authenticated: false };
+    }
+    
+    render(){
+        if(this.state.authenticated) {
+            return (
+                <Router>
+                    <div>
+                        <Route exact path = "/" component = {Home} />
+                        <Route path = "/map" component = {MapComponent} />
+                    </div>
+                </Router>
+            );
+        } else {
+            return (
+                <div>
+                  <p> </p>
+                </div>
+              )
+        }
+    }
+    
+    async componentDidMount() {
+        if (auth.isLoggedin()) {
+            try {
+                await auth.renewToken();
+                this.setState({authenticated: true});
+            } catch (err) {
+                auth.userLogout();
+            }
+        } else {
+            auth.userLogin();
+        }
+    }
 }

@@ -1,9 +1,9 @@
 import React from "react";
-import AppRouter from "./AppRouter";
+import AppRouterNoAuth from "./AppRouterNoAuth";
 
 function App() {
   return (
-    <AppRouter/>
+    <AppRouterNoAuth/>
   );
 }
 

@@ -1,11 +1,10 @@
 import React from "react";
-import { Navbar, Alignment, Button, Colors, Classes } from "@blueprintjs/core";
-import { useAuth0 } from "./../../../react-auth0-wrapper";
+import { Navbar, Button, Alignment, Colors, Classes } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons"
+
+import * as auth from "../../../services/auth0/auth0";
 
 const NavBar = () => {
-
-    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-
     const navbarStyle = {
         backgroundColor: Colors.DARK_GRAY1
         };
@@ -15,15 +14,7 @@ const NavBar = () => {
                 <Navbar.Heading className="text-white-100">Tangarine</Navbar.Heading>
             </Navbar.Group>
             <Navbar.Group align={Alignment.RIGHT}>
-                {!isAuthenticated && (
-                    <Button className="bp3-minimal" icon="files" text="Login" onClick={() => loginWithRedirect({})}/>
-                )}
-                {isAuthenticated && (
-                    <div>
-                        <Button className="bp3-minimal" icon="files" text="Logout" onClick={() => logout()}/>
-                        <Button className="bp3-minimal" icon="home" text="Home" onClick={()=>{}}/>
-                    </div>
-                )}
+            <Button className={Classes.MINIMAL} icon={IconNames.LOG_OUT} onClick={auth.userLogout}/>
             </Navbar.Group>
         </Navbar>
     )

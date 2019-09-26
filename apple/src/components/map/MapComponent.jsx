@@ -1,7 +1,7 @@
 import React from 'react';
 import { Map, GoogleApiWrapper, Polyline, Marker } from 'google-maps-react';
 import BaseLayout from "./../base/BaseLayout";
-import RouteBoxer from "./../../services/routeboxer";
+import RouteBoxer from "../../services/routeboxer/routeboxer";
 
 export class MapComponent extends React.Component {
   constructor(props) {
