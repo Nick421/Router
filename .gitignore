@@ -1,4 +1,5 @@
 # Ignore folder named 'venv'
+dev_env/
 venv/
 bin/
 lib/
