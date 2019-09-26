@@ -2,6 +2,7 @@ import React from "react";
 import {Redirect} from "react-router-dom";
 
 import * as auth from "../../services/auth0/auth0";
+import * as authaxios from "../../services/authaxios/authaxios";
 
 export default class Callback extends React.PureComponent {
   constructor() {
@@ -17,10 +18,17 @@ export default class Callback extends React.PureComponent {
         </div>
       )
     } else {
+      authaxios.setBearerToken(auth.getAccessToken());
+      this.testAPI();
       return (
         <Redirect to="/"/>
       );
     }
+  }
+
+  async testAPI() {
+    const djangoresponse = await authaxios.authaxiosInstance.get("/private");
+    console.log(djangoresponse);
   }
 
   async componentDidMount() {
