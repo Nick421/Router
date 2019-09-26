@@ -21,7 +21,7 @@ export default class Callback extends React.PureComponent {
       authaxios.setBearerToken(auth.getAccessToken());
       this.testAPI();
       return (
-        <Redirect to="/"/>
+        <Redirect to="/redirect"/>
       );
     }
   }

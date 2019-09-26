@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import MapComponent from "./components/map/MapComponent" ;
-import Home from "./components/home/Home";
 import * as auth from "./services/auth0/auth0";
 
 export default class AppRouter extends React.PureComponent {
@@ -17,8 +16,8 @@ export default class AppRouter extends React.PureComponent {
             return (
                 <Router>
                     <div>
-                        <Route exact path = "/" component = {Home} />
-                        <Route path = "/map" component = {MapComponent} />
+                        <Route exact path = "/" component = {MapComponent} />
+                    <Route path = "/redirect" component = {MapComponent} />
                     </div>
                 </Router>
             );
