@@ -84,9 +84,13 @@ WSGI_APPLICATION = "wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'elec3609',
+        'USER': 'nick',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -137,7 +141,8 @@ REST_FRAMEWORK = {
     ),
 }
 
-jsonurl = request.urlopen("https://dngu4013.au.auth0.com/.well-known/jwks.json")
+jsonurl = request.urlopen(
+    "https://dngu4013.au.auth0.com/.well-known/jwks.json")
 jwks = json.loads(jsonurl.read())
 cert = (
     "-----BEGIN CERTIFICATE-----\n"
@@ -156,3 +161,5 @@ JWT_AUTH = {
     "JWT_ISSUER": "https://" + "dngu4013.au.auth0.com" + "/",
     "JWT_AUTH_HEADER_PREFIX": "Bearer",
 }
+
+AUTH_USER_MODEL = "auth0authorization.User"
