@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r"^api/public$", views.public),
-    url(r"^api/private$", views.private),
-    url(r"^api/private-scoped$", views.private_scoped),
+    url(r"^api/login$", views.login),
+    url(r"^api/private_history$", views.private_history),
+    url(r"^api/private_favourite$", views.private_favourite)
 ]
