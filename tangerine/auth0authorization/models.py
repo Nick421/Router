@@ -33,3 +33,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
         return self
+
+
+class History(models.Model):
+    historyID = models.CharField(max_length=35, unique=True, primary_key=True)
+    source = models.CharField(max_length=35, null=False, blank=False)
+    destination = models.CharField(max_length=35, null=False, blank=False)
+    keyword = models.CharField(max_length=35)
+    userID = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
+
+
+class Favourite(models.Model):
+    userID = models.ForeignKey('User', null=False, on_delete=models.CASCADE)
+    historyID = models.ForeignKey('History', null=False, on_delete=models.CASCADE)
+    unique_together = [['userID', 'historyID']]
