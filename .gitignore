@@ -1,15 +1,15 @@
 # Ignore folder named 'venv'
 .vscode
-django/dev_env/
+tangerine/dev_env/
 venv/
 bin/
 lib/
 pyvenv.cfg
-django/__pycache__/
-django/config/__pycache__/__init__.cpython-36.pyc
-django/config/__pycache__/settings.cpython-36.pyc
-django/config/__pycache__/urls.cpython-36.pyc
-django/server/__pycache__/__init__.cpython-36.pyc
-django/server/__pycache__/urls.cpython-36.pyc
-django/server/__pycache__/views.cpython-36.pyc
-django/pip-selfcheck.json
+tangerine/__pycache__/
+tangerine/config/__pycache__/__init__.cpython-36.pyc
+tangerine/config/__pycache__/settings.cpython-36.pyc
+tangerine/config/__pycache__/urls.cpython-36.pyc
+tangerine/server/__pycache__/__init__.cpython-36.pyc
+tangerine/server/__pycache__/urls.cpython-36.pyc
+tangerine/server/__pycache__/views.cpython-36.pyc
+tangerine/pip-selfcheck.json
