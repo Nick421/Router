@@ -98,7 +98,7 @@ export class MapComponent extends React.Component {
     } else {
       return(
         <BaseLayout>
-          <Button className="h-10 z-10" intent={Intent.PRIMARY} onClick={this.buttonHandler}>Test Search</Button>
+          <Button className="h-10 z-10" intent={Intent.WARNING} onClick={this.buttonHandler}>Test Search</Button>
           <Map
             style={{position: 'absolute', top: '5.5rem'}}
             google={this.props.google}
