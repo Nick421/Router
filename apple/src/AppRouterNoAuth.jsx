@@ -13,7 +13,7 @@ export default class AppRouterNoAuth extends React.PureComponent {
             <Router>
                 <Route exact path = "/" component = {AppRouter} />
                 <Route path = "/login" component = {AppRouter} />
-                <Route path = "/redirect" component = {AppRouter} />
+                <Route path = "/profile" component = {AppRouter} />
             </Router>
         );
     } else {
@@ -22,7 +22,6 @@ export default class AppRouterNoAuth extends React.PureComponent {
                 <Route exact path = "/" component = {Home} />
                 <Route path = "/login" component = {AppRouter} />
                 <Route path = "/callback" component = {Callback} />
-                <Route path = "/redirect" component = {AppRouter} />
             </Router>
         );
     }
