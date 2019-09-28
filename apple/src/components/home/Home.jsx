@@ -1,6 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Button, IconName } from "@blueprintjs/core";
+import "./_home.css"; 
 
 const bgImg = require("./images/city-span-down.jpg");
 const xbox = require("./images/xbox.png");
@@ -28,39 +29,37 @@ class Home extends React.Component {
 
   render() {
     const { loading } = this.state;
-    if (loading) {
+    if (loading) { 
       return null;
     }
     return (
         // Front page
-      <div>
-        <div className="h-full overflow-x-hidden">
-          <section className="flex flex-col items-center justify-center h-screen">
-            <div
-              className="flex flex-col text-white bg-center items-center justify-center bg-cover bg-fixed w-screen h-full"
-              style={{ backgroundImage: `url(${bgImg})` }}
-            >
-              <div className="flex flex-col items-center">
-                <h1 className=" text-6xl mr ">ROUTER</h1>
-                <p className="mt-2">
-                  {" "}
-                  Focus on the journey and not the destination{" "}
-                </p>
-              </div>
-              <div className="w-1/4 h-2 bg-white border-round"></div>
-              <button
-                className="mt-16 h-20 flex justify-center items-center w-48 border-orange-400 hover:border-teal-400 hover:text-teal-400 focus:outline-none border-4 border-solid rounded-lg text-orange-400 text-2xl select-none"
-                onClick={this.redirectHandler}
-              >
-                Login
-              </button>
+      <div className="h-full overflow-x-hidden scroll-snap-container">
+        <section className="flex flex-col items-center justify-center h-screen scroll-snap">
+          <div
+            className="flex flex-col text-white bg-center items-center justify-center bg-cover bg-fixed w-screen h-full"
+            style={{ backgroundImage: `url(${bgImg})` }}
+          >
+            <div className="flex flex-col items-center">
+              <h1 className=" text-6xl mr ">ROUTER</h1>
+              <p className="mt-2">
+                {" "}
+                Focus on the journey and not the destination{" "}
+              </p>
             </div>
-          </section>
-        </div>
+            <div className="w-1/4 h-2 bg-white border-round"></div>
+            <button
+              className="mt-16 h-20 flex justify-center items-center w-48 border-orange-400 hover:border-teal-400 hover:text-teal-400 focus:outline-none border-4 border-solid rounded-lg text-orange-400 text-2xl select-none"
+              onClick={this.redirectHandler}
+            >
+              Login
+            </button>
+          </div>
+        </section>
         {/* Explanation page*/}
 
         <section
-          className="flex flex-col items-center justify-center bg-center h-screen bg-cover bg-fixed h-full"
+          className="flex flex-col items-center justify-center bg-center h-screen bg-cover bg-fixed scroll-snap"
           style={{ backgroundImage: `url(${rail})` }}
         >
           ><h1 className="text-6xl text-orange-400">The problem</h1>
@@ -91,7 +90,7 @@ class Home extends React.Component {
         </section>
         {/* Features page*/}
         <section
-          className="flex flex-col items-center justify-center bg-center h-screen bg-cover bg-fixed h-full"
+          className="flex flex-col items-center justify-center bg-center h-screen bg-cover bg-fixed scroll-snap"
           style={{ backgroundImage: `url(${city})` }}
         >
           ><h1 className="text-6xl text-orange-400 py-1">Features</h1>

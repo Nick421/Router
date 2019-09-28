@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {createRef} from 'react';
 import { Map, GoogleApiWrapper, Polyline, Marker } from 'google-maps-react';
 import BaseLayout from "./../base/BaseLayout";
 import RouteBoxer from "../../services/routeboxer/routeboxer";
@@ -12,15 +12,43 @@ export class MapComponent extends React.Component {
       start: {},
       end: {},
       boxes: {},
+      location: [],
+      locationSize: 0,
+      map: null,
     };
     this.directionsService = new window.google.maps.DirectionsService();
     this.routeBoxer = new RouteBoxer(this.props.google);
   }
-  
-  calculateDistance = () => {
+
+   drawBoxes(boxes, map) {
+    const boxpolys = new Array(boxes.length);
+    for (var i = 0; i < boxes.length; i++) {
+        boxpolys[i] = new window.google.maps.Rectangle({
+        bounds: boxes[i],
+        fillOpacity: 0,
+        strokeOpacity: 1.0,
+        strokeColor: '#000000',
+        strokeWeight: 1,
+        map: map
+      });
+    }
+  }
+
+  createMarker(place, map) {
+      if(!place || !place.geometry) return;
+      var marker = new window.google.maps.Marker({
+      map: map,
+      position: place.geometry.location
+      });
+  }
+
+  calculateDistance = (mapProps, map) => {
+    console.log(map);
     console.log("Run");
     const origin = "UTS, Sydney";
     const destination = "Central station, Sydney";
+    this.setState({map: map});
+    const placeServices = new window.google.maps.places.PlacesService(map);
     this.directionsService.route(
       {
         origin: origin,
@@ -29,19 +57,20 @@ export class MapComponent extends React.Component {
       },
       async (result, status) => {
         if (status === this.props.google.maps.DirectionsStatus.OK) {
+          await this.setState({location: []});
           const calculatedDirection = result.routes[0].overview_path.map(p => {return {lat:p.lat() , lng:p.lng()}});
-          var bound = new this.props.google.maps.LatLngBounds();
-          
-          for (var i = 0; i < this.state.directions.length; i++) {
-            bound.extend(this.state.directions[i]);
-          }
-          var boxes = await this.routeBoxer.box(result.routes[0].overview_path, 0.02)
-
+          var boxes = await this.routeBoxer.box(result.routes[0].overview_path, 0.07)
+          console.log(boxes);
+          // this.drawBoxes(boxes, map);
+          // for(var i = 0; i < boxes.length; i++) {
+          //   console.log(boxes[i]);
+          // }
+          await this.searchBound(boxes, placeServices);
+          // console.log(result.routes[0].overview_path);
           this.setState({
             directions: calculatedDirection,
             start: calculatedDirection[0],
             end: calculatedDirection[calculatedDirection.length-1],
-            bounds: bound,
             boxes: boxes,
           });
         } else {
@@ -52,8 +81,38 @@ export class MapComponent extends React.Component {
     );
   }
 
+  searchBound = async (bound, placeServices) => {
+    for (var i = 0; i < bound.length - 1; i++) {
+      setTimeout(() => {
+        this.performSearch(bound[i], placeServices)
+      }, 500 * i);;
+    }
+  }
+
+  performSearch = async (bound, placeServices) => {
+    var request = {
+      bounds: bound,
+      keyword: 'food',
+    };
+    await placeServices.nearbySearch(request, this.callback);
+ }
+ callback = (results, status) => {
+  if (status != window.google.maps.places.PlacesServiceStatus.OK) {
+    console.error(status);
+    return;
+  }
+  var oneRound = []
+  for(var i = 0; i < results.length; i++) {
+    // console.log(results[i]);
+    if(results[i]) this.createMarker(results[i], this.state.map);
+    // this.state.location.push(results[i]);
+  }
+  // this.state.location.push(oneRound);
+  // this.setState({locationSize: this.state.locationSize + results.length});
+  }
+
   render = () => {
-    console.log(this.props.google);
+
     return(
       <BaseLayout>
         <Map
@@ -71,9 +130,17 @@ export class MapComponent extends React.Component {
           strokeWeight={2} />
         <Marker position={this.state.start}/>
         <Marker position={this.state.end}/>
+        {this.renderMarker()}
         </Map>
       </BaseLayout>
     )
+  }
+
+  renderMarker = () => {
+    // console.log(this.state.location)
+    // for (var i = 0; i < this.state.location.length; i++) {
+    //     console.log(this.state.location[i])
+    // }
   }
 }
 
