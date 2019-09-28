@@ -7,3 +7,7 @@ export const authaxiosInstance = axios.create({
 export function setBearerToken(accessToken) {
   authaxiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 }
+
+export function checkHeader() {
+  return authaxiosInstance.defaults.headers.common;
+}

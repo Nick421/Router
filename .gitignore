@@ -12,4 +12,5 @@ tangerine/config/__pycache__/urls.cpython-36.pyc
 tangerine/server/__pycache__/__init__.cpython-36.pyc
 tangerine/server/__pycache__/urls.cpython-36.pyc
 tangerine/server/__pycache__/views.cpython-36.pyc
+tangerine/auth0authorization/__pycache__
 tangerine/pip-selfcheck.json
