@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import json
 from six.moves.urllib import request
+import config
 
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
@@ -86,10 +87,10 @@ WSGI_APPLICATION = "wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'elec3609',
-        'USER': 'nick',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': config.database['name'],
+        'USER': config.database['user'],
+        'PASSWORD': config.database['password'],
+        'HOST': config.database['host'],
         'PORT': '',
     }
 }

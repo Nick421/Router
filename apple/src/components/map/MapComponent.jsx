@@ -1,23 +1,27 @@
-import React, {createRef} from 'react';
+import React from 'react';
+import { Button } from "@blueprintjs/core";
 import { Map, GoogleApiWrapper, Polyline, Marker } from 'google-maps-react';
+
 import BaseLayout from "./../base/BaseLayout";
-import RouteBoxer from "../../services/routeboxer/routeboxer";
+import Loading from "./../base/loading/Loading";
+import * as RoutingService from "../../services/routeboxer/routing";
+import * as HistoryServices from "../../services/history/history";
 
 export class MapComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      directions: [],
-      bounds: null,
-      start: {},
-      end: {},
-      boxes: {},
-      location: [],
-      locationSize: 0,
+      isLoading: false,
       map: null,
+      directions: [],
+      start: null,
+      end: null,
+      origin: "UTS, Sydney",
+      destination: "Central station, Sydney",
+      keyword: "food",
+      places: [],
     };
-    this.directionsService = new window.google.maps.DirectionsService();
-    this.routeBoxer = new RouteBoxer(this.props.google);
+    RoutingService.setGoogle(window.google);
   }
 
    drawBoxes(boxes, map) {
@@ -36,111 +40,84 @@ export class MapComponent extends React.Component {
 
   createMarker(place, map) {
       if(!place || !place.geometry) return;
-      var marker = new window.google.maps.Marker({
+      new window.google.maps.Marker({
       map: map,
       position: place.geometry.location
       });
   }
 
-  calculateDistance = (mapProps, map) => {
-    console.log(map);
-    console.log("Run");
-    const origin = "UTS, Sydney";
-    const destination = "Central station, Sydney";
-    this.setState({map: map});
-    const placeServices = new window.google.maps.places.PlacesService(map);
-    this.directionsService.route(
-      {
-        origin: origin,
-        destination: destination,
-        travelMode: this.props.google.maps.TravelMode.DRIVING
-      },
-      async (result, status) => {
-        if (status === this.props.google.maps.DirectionsStatus.OK) {
-          await this.setState({location: []});
-          const calculatedDirection = result.routes[0].overview_path.map(p => {return {lat:p.lat() , lng:p.lng()}});
-          var boxes = await this.routeBoxer.box(result.routes[0].overview_path, 0.07)
-          console.log(boxes);
-          // this.drawBoxes(boxes, map);
-          // for(var i = 0; i < boxes.length; i++) {
-          //   console.log(boxes[i]);
-          // }
-          await this.searchBound(boxes, placeServices);
-          // console.log(result.routes[0].overview_path);
-          this.setState({
-            directions: calculatedDirection,
-            start: calculatedDirection[0],
-            end: calculatedDirection[calculatedDirection.length-1],
-            boxes: boxes,
-          });
-        } else {
-          console.log("What?");
-          console.error(`error fetching directions ${result}`);
-        }
-      }
-    );
+  onReadyHandler = async (_, map) => {
+    this.setState({
+      map: map,
+    });
   }
 
-  searchBound = async (bound, placeServices) => {
-    for (var i = 0; i < bound.length - 1; i++) {
-      setTimeout(() => {
-        this.performSearch(bound[i], placeServices)
-      }, 500 * i);;
+  performSearch = async (map) => {
+    await this.setState({
+      directions: [],
+      start: null,
+      end: null,
+      places: [],
+    });
+    const overview_path = await RoutingService.calculateDistanceOverview(this.state.origin, this.state.destination);
+    const directions = RoutingService.extractDirection(overview_path);
+    const nearbyPlaces = await RoutingService.getNearbyPlaces(this.state.keyword, overview_path, map);
+    console.log(nearbyPlaces);
+    for(const value of nearbyPlaces.values()) {
+      this.state.places.push(value.geometry.location);
     }
+    console.log(this.state.places);
+    this.setState({
+      directions: directions,
+      start: directions[0],
+      end: directions[directions.length - 1],
+      isLoading: false,
+    });
   }
 
-  performSearch = async (bound, placeServices) => {
-    var request = {
-      bounds: bound,
-      keyword: 'food',
-    };
-    await placeServices.nearbySearch(request, this.callback);
- }
- callback = (results, status) => {
-  if (status != window.google.maps.places.PlacesServiceStatus.OK) {
-    console.error(status);
-    return;
-  }
-  var oneRound = []
-  for(var i = 0; i < results.length; i++) {
-    // console.log(results[i]);
-    if(results[i]) this.createMarker(results[i], this.state.map);
-    // this.state.location.push(results[i]);
-  }
-  // this.state.location.push(oneRound);
-  // this.setState({locationSize: this.state.locationSize + results.length});
+  buttonHandler = async () => {
+    this.setState({
+      isLoading: true,
+      keyword: "bar",
+    });
+    this.performSearch(this.state.map);
+    const history_check = await HistoryServices.getAllHistory();
+    console.log(history_check);
+    
   }
 
-  render = () => {
-
-    return(
-      <BaseLayout>
-        <Map
-          google={this.props.google}
-          zoom={15}
-          initialCenter={{ lat: -33.867, lng: 151.195}}
-          onReady={this.calculateDistance}
-          bounds = {this.bounds}
-        >
-        
-        <Polyline 
-          path={this.state.directions}
-          strokeColor="#0000FF"
-          strokeOpacity={0.8}
-          strokeWeight={2} />
-        <Marker position={this.state.start}/>
-        <Marker position={this.state.end}/>
-        {this.renderMarker()}
-        </Map>
-      </BaseLayout>
-    )
-  }
-
-  renderMarker = () => {
-    // console.log(this.state.location)
-    // for (var i = 0; i < this.state.location.length; i++) {
-    //     console.log(this.state.location[i])
-    // }
+  render() {
+    if(this.state.isLoading) {
+      return(
+        <BaseLayout>
+          <div className="h-screen">
+            <Loading/>
+          </div>
+        </BaseLayout>
+      )
+    } else {
+      return(
+        <BaseLayout>
+          <Button onClick={this.buttonHandler}>Touch</Button>
+          <Map
+            google={this.props.google}
+            zoom={15}
+            initialCenter={{ lat: -33.867, lng: 151.195}}
+            onReady={this.onReadyHandler}
+          >
+          {this.state.places.map((item, index) => (
+            <Marker position={item} key={index}/>
+          ))}
+          <Polyline 
+            path={this.state.directions}
+            strokeColor="#0000FF"
+            strokeOpacity={0.8}
+            strokeWeight={2} 
+          />
+          </Map>
+        </BaseLayout>
+      )
+    }
   }
 }
 
