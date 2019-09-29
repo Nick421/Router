@@ -4,10 +4,10 @@ import NavBar from "./navbar/NavBar"
 export default class BaseLayout extends React.PureComponent {
     render() {
         return (
-            <React.Fragment>
+            <div className="h-screen flex flex-col">
                 <NavBar/>
                 {this.props.children}
-            </React.Fragment>
+            </div>
         )
     }
 }

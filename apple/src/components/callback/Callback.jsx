@@ -20,7 +20,7 @@ export default class Callback extends React.PureComponent {
     } else {
       AuthAxios.setBearerToken(auth.getAccessToken());
       return (
-        <Redirect to="/redirect"/>
+        <Redirect to="/profile"/>
       );
     }
   }

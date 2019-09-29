@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from "@blueprintjs/core";
+import { Button, Intent } from "@blueprintjs/core";
 import { Map, GoogleApiWrapper, Polyline, Marker } from 'google-maps-react';
 
 import BaseLayout from "./../base/BaseLayout";
@@ -64,7 +64,7 @@ export class MapComponent extends React.Component {
     const nearbyPlaces = await RoutingService.getNearbyPlaces(this.state.keyword, overview_path, map);
     console.log(nearbyPlaces);
     for(const value of nearbyPlaces.values()) {
-      this.state.places.push(value.geometry.location);
+      this.state.places.push({name : value.name, location: value.geometry.location});
     }
     console.log(this.state.places);
     this.setState({
@@ -98,15 +98,16 @@ export class MapComponent extends React.Component {
     } else {
       return(
         <BaseLayout>
-          <Button onClick={this.buttonHandler}>Touch</Button>
+          <Button className="h-10 z-10" intent={Intent.WARNING} onClick={this.buttonHandler}>Test Search</Button>
           <Map
+            style={{position: 'absolute', top: '5.5rem'}}
             google={this.props.google}
             zoom={15}
             initialCenter={{ lat: -33.867, lng: 151.195}}
             onReady={this.onReadyHandler}
           >
           {this.state.places.map((item, index) => (
-            <Marker position={item} key={index}/>
+            <Marker name={item.name} position={item.location} key={index}/>
           ))}
           <Polyline 
             path={this.state.directions}
