@@ -13,7 +13,7 @@ from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
 
-from .models import User
+from .models import Auth0User, History
 from .serializers import HistorySerializers
 
 
@@ -74,11 +74,11 @@ def login(request):
 This method will parse the token to get subject to store as user_id
 Then it will query the database for history table using user_id as foreign key
 
-@GET 
-return an array of JSON of previous route
+@GET
+return an array of JSON of previous routes
 
 @POST
-store the route 
+store the route and return route id
 """
 
 
@@ -91,41 +91,28 @@ def private_history(request):
     decoded = jwt.decode(token, None, None)
     # get subject part of the token as our pk
     user_id = decoded.get('sub')
-    # this fetch the data associated with user in table auth0authorization_user with same pk
-    print(User.objects.get(subject=user_id))
 
-    """
-    Currently dummy response and data will add proper database interaction 
-    """
-    # TODO
     if request.method == 'POST':
          # validating the JSON before adding in to the database
         valid_data = HistorySerializers(data=request.data)
         if valid_data.is_valid():
-            # TODO add to database
+            # print("data is valid!")
             post_data = valid_data.validated_data
+            user = Auth0User(subject=user_id)
+            # construct the database entry
+            hist = History(
+                source=post_data['Source'], destination=post_data['Destination'], keyword=post_data['Keyword'], userID=user)
+            # save to database
+            hist.save()
+            # print(hist.historyID)
         else:
-            # print(valid_data.errors)
+            # raise error if data is not valid
             raise APIException(valid_data.errors)
-        return JsonResponse({'received data': request.data})
+        return JsonResponse({'route ID': hist.historyID})
 
-    return JsonResponse({
-        'Route 1': {
-            "Source": "UTS",
-            "Destination": "Central station",
-            "Keyword": "food"
-        },
-        'Route 2': {
-            "Source": "USYD",
-            "Destination": "Townhall station",
-            "Keyword": "bar"
-        },
-        'Route 3': {
-            "Source": "Campsie station",
-            "Destination": "Canterbury station",
-            "Keyword": "gym"
-        }
-    })
+    return_data = list(History.objects.filter(userID=user_id).values(
+        'historyID', 'source', 'destination', 'keyword', 'date'))
+    return JsonResponse(return_data, safe=False)
 
 # TODO
 
