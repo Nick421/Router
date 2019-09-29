@@ -163,4 +163,4 @@ JWT_AUTH = {
     "JWT_AUTH_HEADER_PREFIX": "Bearer",
 }
 
-AUTH_USER_MODEL = "auth0authorization.User"
+AUTH_USER_MODEL = "auth0authorization.Auth0User"
