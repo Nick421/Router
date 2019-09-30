@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import { Navbar, Button, Alignment, Colors, Classes, Icon } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons"
 import SideBar from "./../../Sidebar/SideBar";
+import History from "./../../history/History";
 import * as auth from "../../../services/auth0/auth0";
 
 export default class NavBar extends React.PureComponent {
@@ -23,6 +24,7 @@ export default class NavBar extends React.PureComponent {
                 <Link to="/profile" className="pr-5 focus:outline-none">
                     <Icon icon={IconNames.USER} color="#f6ad55"/>
                 </Link>
+                <History/>
                 <Button className={Classes.MINIMAL} icon={IconNames.LOG_OUT} onClick={auth.userLogout}/>
                 </Navbar.Group>
             </Navbar>
