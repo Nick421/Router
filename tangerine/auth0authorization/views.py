@@ -12,9 +12,8 @@ from six.moves.urllib import request as req
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
-
-from .models import Auth0User, History
-from .serializers import HistorySerializers
+from .models import Auth0User, History, Favourite
+from .serializers import HistorySerializers, FavouriteSerializers
 
 
 def get_token_auth_header(request):
@@ -93,7 +92,7 @@ def private_history(request):
     user_id = decoded.get('sub')
 
     if request.method == 'POST':
-         # validating the JSON before adding in to the database
+        # validating the JSON before adding in to the database
         valid_data = HistorySerializers(data=request.data)
         if valid_data.is_valid():
             # print("data is valid!")
@@ -101,7 +100,8 @@ def private_history(request):
             user = Auth0User(subject=user_id)
             # construct the database entry
             hist = History(
-                source=post_data['Source'], destination=post_data['Destination'], keyword=post_data['Keyword'], userID=user)
+                source=post_data['Source'], destination=post_data['Destination'], keyword=post_data['Keyword'],
+                userID=user)
             # save to database
             hist.save()
             # print(hist.historyID)
@@ -114,12 +114,57 @@ def private_history(request):
         'historyID', 'source', 'destination', 'keyword', 'date'))
     return JsonResponse(return_data, safe=False)
 
+
 # TODO
+"""
+This method will parse the token to get subject to store as user_id
+Then it will query the database for history table using user_id as foreign key
+
+@GET
+return an array of JSON of favourite routes
+
+@POST
+store the user_id and history_id 
+"""
+
+
+def getHist(histID):
+    return list(History.objects.filter(historyID='historyID').values('source', 'destination', 'keyword'))
 
 
 @api_view(["GET", "POST"])
 # @requires_scope("read:favourite")
 def private_favourite(request):
-    return JsonResponse(
-        "Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this."
-    )
+    # Decode the token
+    token = get_token_auth_header(request)
+    decoded = jwt.decode(token, None, None)
+    # get subject part of the token to be part of the pk
+    user_id = decoded.get('sub')
+
+    if request.method == 'POST':
+        # validating the JSON before adding in to the database
+        valid_data = FavouriteSerializers(data=request.data)
+        if valid_data.is_valid():
+            # print("data is valid!")
+            post_data = valid_data.validated_data
+            user = Auth0User(subject=user_id)
+            # construct the database entry
+            fav = Favourite(
+                userID=user, historyID=post_data['HistoryID'], name=post_data['Name'])
+            # save to database
+            fav.save()
+            # print(hist.historyID)
+        else:
+            # raise error if data is not valid
+            raise APIException(valid_data.errors)
+        return JsonResponse({'fav ID': fav.id})
+
+    return_data = list()
+
+    for fav in Favourite.objects.filter(userID=user_id):
+        fav_list = list()
+        fav_list.append(fav.name)
+        fav_list.append([fav.historyID.historyID,fav.historyID.source, fav.historyID.destination, fav.historyID.keyword])
+        return_data.append(fav_list)
+
+    return JsonResponse(return_data, safe=False)

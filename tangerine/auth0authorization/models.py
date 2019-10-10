@@ -15,8 +15,8 @@ class RemoteUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, subject):
-        user = self.create_user(subject=subject)
+    def create_superuser(self, subject, password):
+        user = self.create_user(subject=subject, password=password)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -46,9 +46,12 @@ class History(models.Model):
 
 
 class Favourite(models.Model):
+    class Meta:
+        unique_together = (('userID', 'historyID'),)
+
     name = models.CharField(max_length=50, blank=True)
     userID = models.ForeignKey(
         'Auth0User', null=False, on_delete=models.CASCADE)
     historyID = models.ForeignKey(
         'History', null=False, on_delete=models.CASCADE)
-    unique_together = [['userID', 'historyID']]
+
