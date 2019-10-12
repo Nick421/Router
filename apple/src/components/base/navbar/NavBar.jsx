@@ -4,6 +4,7 @@ import { Navbar, Button, Alignment, Colors, Classes, Icon } from "@blueprintjs/c
 import { IconNames } from "@blueprintjs/icons"
 import SideBar from "./../../Sidebar/SideBar";
 import History from "./../../history/History";
+import Favourites from "./../../Favourites/Favourites";
 import * as auth from "../../../services/auth0/auth0";
 
 export default class NavBar extends React.PureComponent {
@@ -15,6 +16,7 @@ export default class NavBar extends React.PureComponent {
             <Navbar className={`${Classes.DARK} w-screen`} style={navbarStyle}>
                 <Navbar.Group align={Alignment.LEFT}>
                     <SideBar/>
+                    <Favourites/>
                 <Link to="/" className="flex pt-2 pl-2 justify-center focus:outline-none hover:">
                     <Icon icon={IconNames.MAP} color="#f6ad55"/>
                     <p className="pl-2 text-white text-lg hover:text:orange-500">Tangerine</p>
