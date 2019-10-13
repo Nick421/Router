@@ -1,6 +1,6 @@
 import React from "react";
 
-export class HistoryPopUp extends React.Component {
+export class FavouritesPopUp extends React.Component {
   
   constructor(props){
     super (props);
