@@ -1,4 +1,6 @@
 import React from "react";
+import { Card, Overlay } from "@blueprintjs/core";
+
 
 export class FavouritesPopUp extends React.Component {
   
@@ -16,9 +18,6 @@ export class FavouritesPopUp extends React.Component {
     this.setState(state => ({isCardOpen: !state.isCardOpen}))
   }
 
-  handleCardClose(){
-    this.setState(state => ({isCardOpen: !state.isCardOpen}))
-  }
   
   render() {
     return (
@@ -30,7 +29,7 @@ export class FavouritesPopUp extends React.Component {
         <div className="text-black w-full bg-gray-500 h-12">
           <button  className="text-xl text-center py-2 w-50 h-50" onClick={this.handleCardClick}>
             {" "}
-            {this.props.name}: from {this.props.start} TO {this.props.end}{" "}
+            {this.props.name}
           </button>
         </div>
 
@@ -46,77 +45,81 @@ export class FavouritesPopUp extends React.Component {
       
       <div>
           {this.state.isCardOpen ?
-
-             <div
-              className="bg-cover bg-center shadow overflow-hidden h-100 w-40 text-center item-center"
-               style={{
-                backgroundColor: "black",
-                position: "absolute",
-                  left: "10%",
-                 top: "5.5rem",
-                  height: "25rem",
-                 width: "70%",
-                 borderColor: "black",
-                  borderWidth: "0.1rem",
-                  opacity: "0.9"
-                }}
-              >
-          
-             <h1 className="block p-4 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter "
+          <div>
+            <Overlay onClose={this.handleCardClick} usePoral={true} isOpen={true} hasBackDrop={this.handleCardClick}>
+                <Card className="bg-cover bg-center shadow overflow-hidden h-100 w-40 text-center item-center"
                   style={{
-                    fontSize: "2.5rem",
-                    fontFamily: "alegreya",
-                    color: "white",
-                    textDecoration: "none"
-                  }}>
-                  {" "}
-                  {this.props.name}
-              </h1>
-              <div className="p-4">
-                <p className="block p-3 text-lg text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter "
-                    style={{
-                      fontSize: "1.5rem",
-                      fontFamily: "alegreya",
-                      color: "white",
-                      textDecoration: "none"
-                    }}>
+                  backgroundColor: "black",
+                  position: "absolute",
+                    left: "25%",
+                    top: "10rem",
+                    height: "25rem",
+                    width: "50rem",
+                    borderColor: "black",
+                    borderWidth: "0.1rem",
+                    opacity: "0.9"
+                  }}
+                >
+                
+                  <h1 className="block p-4 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter "
+                        style={{
+                          fontSize: "2.5rem",
+                          fontFamily: "alegreya",
+                          color: "white",
+                          textDecoration: "none"
+                        }}>
                         {" "}
-                      Start: {this.props.start}
-                </p>
+                        {this.props.name}
+                    </h1>
+                    <div className="p-4">
+                      <p className="block p-3 text-lg text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter "
+                          style={{
+                            fontSize: "1.5rem",
+                            fontFamily: "alegreya",
+                            color: "white",
+                            textDecoration: "none"
+                          }}>
+                              {" "}
+                            Start: {this.props.start}
+                      </p>
 
-                <p className="block p-3 text-lg text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter"
-                    style={{
-                      fontSize: "1.5rem",
-                      fontFamily: "alegreya",
-                      color: "white",
-                      textDecoration: "none"
-                    }}>
+                      <p className="block p-3 text-lg text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter"
+                          style={{
+                            fontSize: "1.5rem",
+                            fontFamily: "alegreya",
+                            color: "white",
+                            textDecoration: "none"
+                          }}>
 
-                  {" "}
-                  End: {this.props.end} 
-                </p>
-              </div>
-              
-              <div className="p-4">
-                <button className="bg-blue-500 p-4 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-                    {" "}
-                    Show Route
-                </button>
-              </div>
+                        {" "}
+                        End: {this.props.end} 
+                      </p>
+                    </div>
+                    
+                    <div className="p-4">
+                      <button className="bg-blue-500 p-4 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+                          {" "}
+                          Show Route
+                      </button>
+                    </div>
 
-                <div className="p-4">
-                  <button className="bg-red-500 p-6 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={this.handleCardClick}>
-                      {" "}
-                      Close
-                  </button>
-                </div>
+                      <div className="p-4">
+                        <button className="bg-red-500 p-6 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={this.handleCardClick}>
+                            {" "}
+                            Close
+                        </button>
+                      </div>
+                 </Card>
+               </Overlay>
             </div>
               :
               null
             }
         </div>
+        
 
       </div>
     );
   }
+
 }

@@ -35,7 +35,6 @@ export default class History extends React.Component {
         }
       ]
     };
-    this.handleClick = this.handleClick.bind(this);
   }
 
   handleDelete = itemId => {
@@ -43,29 +42,16 @@ export default class History extends React.Component {
     this.setState({ maps: items });
   };
 
-  handleClick() {
-    this.setState(state => ({ isOpen: !state.isOpen }));
-    // dont forget to fix the state variables
-  }
 
   render() {
     return (
       <div>
         <div>
-          <Button
-            className="bg-blue-500 hover:bg-blue-700 text-blue-600 hover:text-red-600 font-bold py-2 px-4 rounded"
-            onClick={this.handleClick}
-          >
-            History
-          </Button>
-        </div>
-        <div>
-          {this.state.isOpen ? (
-            <div
+        <div
               className="bg-cover bg-center shadow overflow-hidden h-100 w-40 text-center item-center"
               style={{
                 backgroundColor: "white",
-                position: "absolute",
+                position: "fixed",
                 left: "25%",
                 top: "5.5rem",
                 height: "50rem",
@@ -74,7 +60,7 @@ export default class History extends React.Component {
                 borderWidth: "0.1rem",
                 opacity: "0.9"
               }}
-            >
+            > 
               <h1
                 className="block p-10 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter border-r-4"
                 style={{
@@ -98,7 +84,6 @@ export default class History extends React.Component {
                 />
               ))}
             </div>
-          ) : null}
         </div>
       </div>
     );

@@ -1,4 +1,5 @@
 import React from "react";
+import { Card, Overlay } from "@blueprintjs/core";
 
 export class HistoryPopUp extends React.Component {
   
@@ -16,10 +17,6 @@ export class HistoryPopUp extends React.Component {
     this.setState(state => ({isCardOpen: !state.isCardOpen}))
   }
 
-  handleCardClose(){
-    this.setState(state => ({isCardOpen: !state.isCardOpen}))
-  }
-  
   render() {
     return (
       <div>
@@ -46,21 +43,22 @@ export class HistoryPopUp extends React.Component {
       
       <div>
           {this.state.isCardOpen ?
-
-             <div
-              className="bg-cover bg-center shadow overflow-hidden h-100 w-40 text-center item-center"
-               style={{
+          <div>
+            <Overlay onClose={this.handleCardClick} usePoral={true} isOpen={true} hasBackDrop={this.handleCardClick}>
+              <Card className="bg-cover bg-center shadow overflow-hidden h-100 w-40 text-center item-center"
+                style={{
                 backgroundColor: "black",
                 position: "absolute",
-                  left: "10%",
-                 top: "5.5rem",
+                  left: "25%",
+                  top: "10rem",
                   height: "25rem",
-                 width: "70%",
-                 borderColor: "black",
+                  width: "50rem",
+                  borderColor: "black",
                   borderWidth: "0.1rem",
                   opacity: "0.9"
                 }}
               >
+
           
              <h1 className="block p-4 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter "
                   style={{
@@ -110,6 +108,9 @@ export class HistoryPopUp extends React.Component {
                       Close
                   </button>
                 </div>
+
+                </Card>
+                </Overlay>
             </div>
               :
               null
