@@ -1,10 +1,10 @@
 # Ignore folder named 'venv'
 .vscode
-tangerine/dev_env/
 venv/
 bin/
 lib/
 pyvenv.cfg
+ansible/playbook/*.retry
 tangerine/__pycache__/
 tangerine/config/__pycache__/__init__.cpython-36.pyc
 tangerine/config/__pycache__/settings.cpython-36.pyc
@@ -15,3 +15,4 @@ tangerine/server/__pycache__/views.cpython-36.pyc
 tangerine/auth0authorization/__pycache__
 tangerine/pip-selfcheck.json
 tangerine/auth0authorization/migrations/
+tangerine/dev_env/

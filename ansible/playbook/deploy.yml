@@ -1,0 +1,42 @@
+---
+  - hosts: ec2
+    remote_user: ubuntu
+
+    tasks:
+      - name: "Check if NGINX is installed"
+        command: dpkg -l nginx
+        register: nginx_check
+        failed_when: nginx_check.rc >= 2
+
+      - name: "Check return code"
+        debug:
+          msg: "DPKG return code: {{ nginx_check.rc }}"
+
+      - name: "Install NGINX"
+        become: true
+        command: apt install nginx -y
+        when: nginx_check.rc == 1
+
+      - name: "Skip NGINX installation"
+        debug:
+          msg: 
+          - "NGINX found."
+          - "Skipping..."
+        when: nginx_check.rc == 0
+
+      - name: "Start NGINX service"
+        become: true
+        command: systemctl restart nginx
+        register: nginx_service_start
+        when: nginx_check.rc == 0
+        failed_when: nginx_service_start.rc >= 1
+
+      - name: "Get NGINX status"
+        command: systemctl status nginx
+        register: nginx_service_status
+        failed_when: false
+
+      - name: "Assess NGINX status"
+        fail:
+          msg: "NGINX service was not able to start"
+        when: nginx_service_status.stdout.find("running") == -1 or nginx_service_status.rc >= 1
