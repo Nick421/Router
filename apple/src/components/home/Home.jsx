@@ -6,6 +6,9 @@ const bgImg = require("./images/city-span-down.jpg");
 const xbox = require("./images/xbox.png");
 const city = require("./images/city-across.jpg");
 const rail = require("./images/rail.jpg");
+const routeImg = require("./images/HomeImg1.png");
+const favouriteImg = require("./images/HomeImg2.png");
+const historyImg = require("./images/HomeImg3.png");
 
 function demoAsyncCall() {
   return new Promise(resolve => setTimeout(() => resolve(), 2500));
@@ -32,7 +35,7 @@ class Home extends React.Component {
       return null;
     }
     return (
-        // Front page
+      // Front page
       <div className="h-full overflow-x-hidden scroll-snap-container">
         <section className="flex flex-col items-center justify-center h-screen scroll-snap">
           <div
@@ -40,16 +43,17 @@ class Home extends React.Component {
             style={{ backgroundImage: `url(${bgImg})` }}
           >
             <div className="flex flex-col items-center">
-              <h1 className=" text-6xl mr ">ROUTER</h1>
-              <p className="mt-2">
+              <h1 className="heading">ROUTER</h1>
+              <p className="sentence">
                 {" "}
                 Focus on the journey and not the destination{" "}
               </p>
             </div>
             <div className="w-1/4 h-2 bg-white border-round"></div>
             <button
-              className="mt-16 h-20 flex justify-center items-center w-48 border-orange-400 hover:border-teal-400 hover:text-teal-400 
-                        focus:outline-none border-4 border-solid rounded-lg text-orange-400 text-2xl select-none"
+              // className="mt-16 h-20 flex justify-center items-center w-48 border-orange-400 hover:border-teal-400 hover:text-teal-400 
+              //           focus:outline-none border-4 border-solid rounded-lg text-orange-400 text-2xl select-none"
+              className="login login:hover login:focus"
               onClick={this.redirectHandler}
             >
               Login
@@ -97,25 +101,25 @@ class Home extends React.Component {
           <div className="flex mb-4">
             <div className="w-full bg-gray-500 h-15">
               <div className="flex -mx-2">
-                <div className="w-1/3 px-40 py-6">
-                  <div className="font-bold text-xl mb-2">
+                <div className="img-box">
+                  <div className="features-font">
                     1. Find new local attractions
                   </div>
-                  <img src={xbox} alt="Local Atrractions"></img>
+                  <img src={routeImg} alt="Local Atrractions" className="img img:hover"></img>
                 </div>
 
-                <div className="w-1/3 px-40 py-6">
-                  <div className="font-bold text-xl mb-2 justify-center">
+                <div className="img-box">
+                  <div className="features-font">
                     2. Travel in exciting new ways
                   </div>
-                  <img src={xbox} alt="Blacklist"></img>
+                  <img src={favouriteImg} alt="Blacklist" className="img img:hover"></img>
                 </div>
 
-                <div className="w-1/3 px-40 py-6">
-                  <div className="font-bold text-xl mb-2">
+                <div className="img-box">
+                  <div className="features-font">
                     3. Personalise for you
                   </div>
-                  <img src={xbox} alt="personalise"></img>
+                  <img src={historyImg} alt="personalise" className="img img:hover"></img>
                 </div>
               </div>
             </div>
