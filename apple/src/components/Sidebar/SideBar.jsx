@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import{ Nav, Button, Classes, Menu, MenuItem} from "@blueprintjs/core";
-import BaseLayout from "./../base/BaseLayout";
+import{ Button} from "@blueprintjs/core";
 import Favourites from "./../Favourites/Favourites";
 import History from "./../history/History";
 import AccountDetail from "./../AccountDetail/AccountDetail";
@@ -15,12 +14,10 @@ export default class SideBar extends React.Component{
             isFavouriteOpen: false,
             isAccountDetailOpen: false,
         }
-
         this.handleClick = this.handleClick.bind(this);
         this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleFavouriteClick = this.handleFavouriteClick.bind(this);
         this.handleAccountDetailClick = this.handleAccountDetailClick.bind(this);
-        this.handleHistoryClose = this.handleHistoryClose.bind(this);
     }
 
     handleClick(){
@@ -39,9 +36,6 @@ export default class SideBar extends React.Component{
         this.setState(state => ({isAccountDetailOpen: !state.isAccountDetailOpen}));
     }
 
-    handleHistoryClose(){
-        this.setState({isHistoryOpen: false});
-    }
 
     render(){
         return(
@@ -55,54 +49,49 @@ export default class SideBar extends React.Component{
                                               
                                 <ul >
                                      <li >
-                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter hover:border-purple-light hover:bg-grey-lighter border-r-4" 
+                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter 
+                                                                hover:border-purple-light hover:bg-grey-lighter border-r-4" 
                                             onClick={this.handleFavouriteClick} 
                                             style={{fontSize: "2.5rem", fontFamily: "alegreya", color: "white", textDecoration:  "none" }}>
                                             Favourites
                                         </a>
-
                                         <div>
                                             {this.state.isFavouriteOpen? <div><Favourites/></div> : null}
                                         </div>
-                  
                                      </li>
 
                                      <li >
-                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter hover:border-purple-light hover:bg-grey-lighter border-r-4" 
+                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter 
+                                                                hover:border-purple-light hover:bg-grey-lighter border-r-4" 
                                             onClick={this.handleHistoryClick}
                                             style={{fontSize: "2.5rem", fontFamily: "alegreya", color: "white", textDecoration:  "none" }}>
                                             History
                                         </a>
-
                                         <div>
                                             {this.state.isHistoryOpen? <div><History/> </div> : null}
                                         </div>
-                  
                                      </li>
 
                                      <li >
-                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter hover:border-purple-light hover:bg-grey-lighter border-r-4" 
+                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter 
+                                                                hover:border-purple-light hover:bg-grey-lighter border-r-4" 
                                             onClick={this.handleAccountDetailClick}
                                             style={{fontSize: "2.5rem", fontFamily: "alegreya", color: "white", textDecoration:  "none" }}>
                                             Account Detail
                                         </a>
-
                                         <div>
                                             {this.state.isAccountDetailOpen? <div> <AccountDetail/> </div> : null }
                                         </div>
-                  
                                      </li>
-                                   
-
-                                    
-                                    </ul>
-                                </div>:
-                                null}
-                    </div>
+                                
+                                 </ul>
+                            </div>:
+                            null
+                            }
+                        </div>
             </div>   
         );
     }
-
 }
 
 

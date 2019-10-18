@@ -1,7 +1,4 @@
 import * as React from "react";
-
-import { Button } from "@blueprintjs/core";
-import BaseLayout from "./../base/BaseLayout";
 import { FavouritesPopUp } from "./FavouritesPopUp";
 
 export default class Favourites extends React.Component {
@@ -49,15 +46,12 @@ export default class Favourites extends React.Component {
           }
       ]
     };
-
   }
 
   handleDelete = itemId => {
     const items = this.state.maps.filter(maps => maps.id !== itemId);
     this.setState({ maps: items });
   };
-
-//favourite button on menu is displayed here and when clicked, it shows the favourite part
 
   render() {
     return (
@@ -77,28 +71,32 @@ export default class Favourites extends React.Component {
                 opacity: "0.9"
               }}
             > 
-              <h1
-                className="block p-10 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter border-r-4"
-                style={{
-                  fontSize: "2.5rem",
-                  fontFamily: "alegreya",
-                  color: "black",
-                  textDecoration: "none"
-                }}
-              >
-                {" "}
-                Favourites{" "}
-              </h1>
-              {this.state.maps.map(trip => (
-                <FavouritesPopUp
-                  id={trip.id}
-                  start={trip.start}
-                  end={trip.end}
-                  name={trip.name}
-                  onDelete={this.handleDelete}
-                  trip={trip}
-                />
-              ))}
+
+            <h1
+              className="block p-10 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter border-r-4"
+              style={{
+                fontSize: "2.5rem",
+                fontFamily: "alegreya",
+                color: "black",
+                textDecoration: "none"
+              }}
+            >
+              {" "}
+              Favourites{" "}
+            </h1>
+
+            {this.state.maps.map((trip, index) => (
+              <FavouritesPopUp
+                key={index}
+                id={trip.id}
+                start={trip.start}
+                end={trip.end}
+                name={trip.name}
+                onDelete={this.handleDelete}
+                trip={trip}
+              />
+            ))}
+            
             </div>
         </div>
       </div>

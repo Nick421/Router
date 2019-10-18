@@ -1,7 +1,4 @@
 import * as React from "react";
-
-import { Nav, Button, Drawer, Classes } from "@blueprintjs/core";
-import BaseLayout from "./../base/BaseLayout";
 import { HistoryPopUp } from "./HistoryPopUp";
 
 export default class History extends React.Component {
@@ -47,7 +44,7 @@ export default class History extends React.Component {
     return (
       <div>
         <div>
-        <div
+          <div
               className="bg-cover bg-center shadow overflow-hidden h-100 w-40 text-center item-center"
               style={{
                 backgroundColor: "white",
@@ -60,30 +57,33 @@ export default class History extends React.Component {
                 borderWidth: "0.1rem",
                 opacity: "0.9"
               }}
-            > 
-              <h1
-                className="block p-10 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter border-r-4"
-                style={{
-                  fontSize: "2.5rem",
-                  fontFamily: "alegreya",
-                  color: "black",
-                  textDecoration: "none"
-                }}
-              >
-                {" "}
-                History{" "}
-              </h1>
-              {this.state.maps.map(trip => (
-                <HistoryPopUp
-                  id={trip.id}
-                  start={trip.start}
-                  end={trip.end}
-                  name={trip.name}
-                  onDelete={this.handleDelete}
-                  trip={trip}
-                />
-              ))}
-            </div>
+          > 
+
+          <h1
+            className="block p-10 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter border-r-4"
+            style={{
+              fontSize: "2.5rem",
+              fontFamily: "alegreya",
+              color: "black",
+              textDecoration: "none"
+            }}
+           >
+            {" "}
+             History{" "}
+            </h1>
+          
+            {this.state.maps.map((trip, index) => (
+              <HistoryPopUp
+                key={index}
+                 id={trip.id}
+                 start={trip.start}
+                 end={trip.end}
+                 name={trip.name}
+                 onDelete={this.handleDelete}
+                 trip={trip}
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
