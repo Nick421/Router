@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, Overlay } from "@blueprintjs/core";
 
-
 export class FavouritesPopUp extends React.Component {
   
   constructor(props){
