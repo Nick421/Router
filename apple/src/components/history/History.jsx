@@ -2,6 +2,7 @@ import React from "react";
 import { Classes, Overlay, Button, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
+import * as FavouriteServices from "../../services/favourite/favourite";
 import * as HistoryServices from "../../services/history/history";
 import Loading from "../base/loading/Loading";
 
@@ -40,7 +41,7 @@ export default class History extends React.Component {
 
   renderTable = () => {
     return (
-      <div className="flex flex-col bg-white text-center lg:w-1/2 sm:w-96 justify-center items-center px-8 pt-8 pb-16">
+      <div className="flex flex-col bg-white text-center w-96 justify-center items-center px-8 pt-8 pb-16">
         <div className="px-2 py-2 right-0 top-0 absolute"> 
           <Button
               className="focus:outline-none"
@@ -79,6 +80,7 @@ export default class History extends React.Component {
             className="mx-2"
             icon={IconNames.STAR_EMPTY}
             intent={Intent.SUCCESS}
+            onClick={() => this.saveFavourite(item.historyID)}
           />
           <Button 
             icon={IconNames.CROSS}
@@ -97,5 +99,14 @@ export default class History extends React.Component {
       isLoading: false,
     });
     return;
+  }
+
+  saveFavourite = async (historyID) => {
+    const routeData = {
+      historyID: historyID,
+      name: "",
+    }
+    const favouriteID = await FavouriteServices.saveFavourite(routeData);
+    console.log(favouriteID);
   }
 }

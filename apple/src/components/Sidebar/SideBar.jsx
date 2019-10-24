@@ -83,10 +83,6 @@ export default class SideBar extends React.Component{
     handleFavouriteClick = () => {
         this.setState(state => ({isFavouriteOpen: !state.isFavouriteOpen}));
     }
-
-    handleAccountDetailClick = () => {
-        this.setState(state => ({isAccountDetailOpen: !state.isAccountDetailOpen}));
-    }
 }
 
 
