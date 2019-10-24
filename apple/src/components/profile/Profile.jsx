@@ -11,7 +11,7 @@ export default class Profile extends React.PureComponent {
         return(
             <BaseLayout>
                 <div className="flex flex-col bg-yellow-100 h-full w-screen items-center justify-center">
-                    <div className="flex flex-col bg-white border-solid border-4 border-orange-200 w-1/4 py-10 px-10 items-center">
+                    <div className="flex flex-col bg-white border-solid border-4 border-orange-200 lg:w-1/4 sm:min-w-64 py-10 px-10 items-center">
                         <img src={auth.getUser().picture} style={{width: "20rem", height: "20rem", borderRadius: "50%"}}/>
                         <h1 className="text-5xl text-orange-600 pt-4 pb-8">{auth.getUser().name}</h1>
                         <div className="flex pt-4 pb-20 flex-row justify-center w-full px-4 text-lg text-gray-600">

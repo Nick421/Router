@@ -30,7 +30,7 @@ export function calculateDistanceOverview(origin, destination) {
         if (status === google.maps.DirectionsStatus.OK) {
           resolve(result.routes[0].overview_path);
         } else {
-          reject(`error fetching directions ${result}`);
+          reject("Cannot find a path to destination.");
         }
       }
     );
@@ -64,12 +64,7 @@ async function searchBound(bound, keyword, placeServices) {
   return placesMap;
 }
 
-function calculateBoundCenter(bound) {
-  console.log(bound.getCenter().toJSON());
-}
-
 function performSearch(bound, keyword, placeServices) {
-  calculateBoundCenter(bound);
   let request = {
     location: bound.getCenter(),
     radius: "10",
