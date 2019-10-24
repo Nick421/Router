@@ -13,16 +13,16 @@ def check_SQL_injection(str):
 
 
 class HistorySerializers(serializers.Serializer):
-    Source = serializers.CharField(required=True, max_length=100)
-    Destination = serializers.CharField(required=True, max_length=100)
-    Keyword = serializers.CharField(required=True, max_length=100)
+    source = serializers.CharField(required=True, max_length=100)
+    destination = serializers.CharField(required=True, max_length=100)
+    keyword = serializers.CharField(required=True, max_length=100)
 
     # read_only=True
 
 
 class FavouriteSerializers(serializers.Serializer):
-    Name = serializers.CharField(required=False, max_length=50, allow_blank=True)
-    HistoryID = serializers.SlugRelatedField(slug_field='historyID', queryset=History.objects.all())
+    name = serializers.CharField(required=False, max_length=50, allow_blank=True)
+    historyID = serializers.SlugRelatedField(slug_field='historyID', queryset=History.objects.all())
    # userID = serializers.SlugRelatedField(slug_field='userID', queryset=History.objects.all())
 
 

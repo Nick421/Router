@@ -1,9 +1,8 @@
 import * as React from "react";
 
-import{ Button} from "@blueprintjs/core";
-import Favourites from "./../Favourites/Favourites";
+import{ Button, Colors, Intent } from "@blueprintjs/core";
+import Favourites from "./../favourites/Favourites";
 import History from "./../history/History";
-import AccountDetail from "./../AccountDetail/AccountDetail";
 
 export default class SideBar extends React.Component{
     constructor(props){
@@ -14,83 +13,75 @@ export default class SideBar extends React.Component{
             isFavouriteOpen: false,
             isAccountDetailOpen: false,
         }
-        this.handleClick = this.handleClick.bind(this);
-        this.handleHistoryClick = this.handleHistoryClick.bind(this);
-        this.handleFavouriteClick = this.handleFavouriteClick.bind(this);
-        this.handleAccountDetailClick = this.handleAccountDetailClick.bind(this);
     }
 
-    handleClick(){
+    render(){
+        const menuTextStyle = { fontFamily: "alegreya", color: "white" };
+        const renderMenu = (
+            <div>
+                <div 
+                    className="flex justify-center absolute bg-orange-500 bg-center left-0 z-20 w-56"
+                    style={{ opacity: "1", top: '3.125rem', height: '50rem'}}>        
+                    <ul>
+                        <li>
+                            <a
+                                className="block py-8 text-2xl text-grey-darker text-white font-bold" 
+                                onClick={this.handleFavouriteClick} 
+                                style={menuTextStyle}>
+                                Favourites
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                className="block py-8 text-2xl text-grey-darker text-white font-bold" 
+                                onClick={this.handleHistoryClick}
+                                style={menuTextStyle}
+                            >
+                                History
+                            </a>
+                        </li>
+                    </ul>
+                    <div className="absolute bottom-0 mb-3 text-center">
+                        <p>Tangerine</p>
+                        <p className="text-xs">© by ELEC3609 Group 14</p>
+                    </div>
+                </div>
+                <Favourites
+                    isOpen={this.state.isFavouriteOpen}
+                    closeHandler={this.handleFavouriteClick}
+                />
+                <History
+                    isOpen={this.state.isHistoryOpen}
+                    closeHandler={this.handleHistoryClick}
+                />
+            </div>
+        )
+
+        return (
+             <div>
+                <Button
+                    className="font-bold mr-2" 
+                    intent={Intent.WARNING}
+                    onClick={this.handleClick}
+                >
+                    Menu
+                </Button>
+                { this.state.isOpen ? renderMenu : null }
+            </div>   
+        );
+    }
+    
+
+    handleClick = () => {
         this.setState(state => ({isOpen: !state.isOpen}));
     }
 
-    handleHistoryClick(){
+    handleHistoryClick = () => {
         this.setState(state => ({isHistoryOpen: !state.isHistoryOpen}));
     }
 
-    handleFavouriteClick(){
+    handleFavouriteClick = () => {
         this.setState(state => ({isFavouriteOpen: !state.isFavouriteOpen}));
-    }
-
-    handleAccountDetailClick(){
-        this.setState(state => ({isAccountDetailOpen: !state.isAccountDetailOpen}));
-    }
-
-
-    render(){
-        return(
-             <div>
-                 <div><Button className="bg-blue-500 hover:bg-blue-700 text-blue-600 hover:text-red-600 font-bold py-2 px-4 rounded" 
-                        onClick={this.handleClick}>Menu</Button></div>
-                      
-                       <div>{this.state.isOpen? 
-                            <div className="bg-cover bg-center shadow overflow-hidden h-100 w-40"
-                             style={{ backgroundColor: 'black', opacity: "0.8", position: 'absolute', left: "0rem", top: '5.5rem', height:'50rem', width: "20rem" }}>
-                                              
-                                <ul >
-                                     <li >
-                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter 
-                                                                hover:border-purple-light hover:bg-grey-lighter border-r-4" 
-                                            onClick={this.handleFavouriteClick} 
-                                            style={{fontSize: "2.5rem", fontFamily: "alegreya", color: "white", textDecoration:  "none" }}>
-                                            Favourites
-                                        </a>
-                                        <div>
-                                            {this.state.isFavouriteOpen? <div><Favourites/></div> : null}
-                                        </div>
-                                     </li>
-
-                                     <li >
-                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter 
-                                                                hover:border-purple-light hover:bg-grey-lighter border-r-4" 
-                                            onClick={this.handleHistoryClick}
-                                            style={{fontSize: "2.5rem", fontFamily: "alegreya", color: "white", textDecoration:  "none" }}>
-                                            History
-                                        </a>
-                                        <div>
-                                            {this.state.isHistoryOpen? <div><History/> </div> : null}
-                                        </div>
-                                     </li>
-
-                                     <li >
-                                        <a href= "#" className="block p-10 text-xl text-grey-darker text-white font-bold border-grey-lighter 
-                                                                hover:border-purple-light hover:bg-grey-lighter border-r-4" 
-                                            onClick={this.handleAccountDetailClick}
-                                            style={{fontSize: "2.5rem", fontFamily: "alegreya", color: "white", textDecoration:  "none" }}>
-                                            Account Detail
-                                        </a>
-                                        <div>
-                                            {this.state.isAccountDetailOpen? <div> <AccountDetail/> </div> : null }
-                                        </div>
-                                     </li>
-                                
-                                 </ul>
-                            </div>:
-                            null
-                            }
-                        </div>
-            </div>   
-        );
     }
 }
 

@@ -1,11 +1,14 @@
 import React from 'react';
-import { Button, Intent } from "@blueprintjs/core";
 import { Map, GoogleApiWrapper, Polyline, Marker } from 'google-maps-react';
 
 import BaseLayout from "./../base/BaseLayout";
 import Loading from "./../base/loading/Loading";
+import AppToaster from "./../common/apptoaster/AppToaster";
 import * as RoutingService from "../../services/routeboxer/routing";
 import * as HistoryServices from "../../services/history/history";
+
+import SearchBox from "./elements/SearchBox";
+import { Intent } from '@blueprintjs/core';
 
 export class MapComponent extends React.Component {
   constructor(props) {
@@ -17,11 +20,116 @@ export class MapComponent extends React.Component {
       start: null,
       end: null,
       origin: "UTS, Sydney",
-      destination: "Central station, Sydney",
-      keyword: "food",
+      destination: "Central Station, Sydney",
+      keyword: "Food",
       places: [],
     };
     RoutingService.setGoogle(window.google);
+  }
+
+  render() {
+    if(this.state.isLoading) {
+      return(
+        <BaseLayout>
+          <SearchBox
+              disabled={true}
+              source={this.state.origin}
+              sourceChangeHandler={this.sourceChangeHandler}
+              destination={this.state.destination}
+              destinationChangeHandler={this.destinationChangeHandler}
+              keyword={this.state.keyword}
+              keywordChangeHandler={this.keywordChangeHandler}
+              searchHandler={this.buttonHandler}
+            />
+          <div className="h-screen">
+            <Loading/>
+          </div>
+        </BaseLayout>
+      )
+    } else {
+      return(
+        <BaseLayout>
+          <SearchBox
+            disabled={false}
+            source={this.state.origin}
+            sourceChangeHandler={this.sourceChangeHandler}
+            destination={this.state.destination}
+            destinationChangeHandler={this.destinationChangeHandler}
+            keyword={this.state.keyword}
+            keywordChangeHandler={this.keywordChangeHandler}
+            searchHandler={this.buttonHandler}
+          />
+          <Map
+            style={{position: 'absolute', top: "6.125rem"}}
+            google={this.props.google}
+            zoom={15}
+            initialCenter={{ lat: -33.867, lng: 151.195}}
+            onReady={this.onReadyHandler}
+          >
+          {this.state.places.map((item, index) => (
+            <Marker name={item.name} position={item.location} key={index}/>
+          ))}
+          <Polyline 
+            path={this.state.directions}
+            strokeColor="#0000FF"
+            strokeOpacity={0.8}
+            strokeWeight={2} 
+          />
+          </Map>
+        </BaseLayout>
+      )
+    }
+  }
+
+  performSearch = async (map) => {
+    await this.setState({
+      directions: [],
+      start: null,
+      end: null,
+      places: [],
+    });
+    const overview_path = await RoutingService.calculateDistanceOverview(this.state.origin, this.state.destination)
+      .catch((error) => {
+        AppToaster.show({
+          intent: Intent.DANGER,
+          message: error,
+        });
+        return null;
+      });
+    let validPath = true;
+    if (!overview_path) {
+      validPath = false;
+    }
+    if (overview_path.length > 70) {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Path is too long and is not currently supported by the application.",
+      });
+      validPath = false;
+    }
+    if (!validPath) { 
+      this.setState({ isLoading: false });
+      return; 
+    }
+    
+    const directions = RoutingService.extractDirection(overview_path);
+    const nearbyPlaces = await RoutingService.getNearbyPlaces(this.state.keyword, overview_path, map);
+    for(const value of nearbyPlaces.values()) {
+      this.state.places.push({name : value.name, location: value.geometry.location});
+    }
+    const routeData = {
+      source: this.state.origin,
+      destination: this.state.destination,
+      keyword: this.state.keyword,
+    }
+    const routeID = await HistoryServices.saveHistory(routeData);
+    console.log(routeID);
+    this.setState({
+      directions: directions,
+      start: directions[0],
+      end: directions[directions.length - 1],
+      isLoading: false,
+    });
   }
 
    drawBoxes(boxes, map) {
@@ -52,73 +160,79 @@ export class MapComponent extends React.Component {
     });
   }
 
-  performSearch = async (map) => {
-    await this.setState({
-      directions: [],
-      start: null,
-      end: null,
-      places: [],
-    });
-    const overview_path = await RoutingService.calculateDistanceOverview(this.state.origin, this.state.destination);
-    const directions = RoutingService.extractDirection(overview_path);
-    const nearbyPlaces = await RoutingService.getNearbyPlaces(this.state.keyword, overview_path, map);
-    console.log(nearbyPlaces);
-    for(const value of nearbyPlaces.values()) {
-      this.state.places.push({name : value.name, location: value.geometry.location});
-    }
-    console.log(this.state.places);
-    this.setState({
-      directions: directions,
-      start: directions[0],
-      end: directions[directions.length - 1],
-      isLoading: false,
-    });
+  sourceChangeHandler = (event) => {
+    this.setState({ origin: event.target.value});
+  }
+
+  destinationChangeHandler = (event) => {
+    this.setState({ destination: event.target.value});
+  }
+
+  keywordChangeHandler = (event) => {
+    this.setState({ keyword: event.target.value});
   }
 
   buttonHandler = async () => {
+    if (!this.inputCheck()) { return; }
+
     this.setState({
       isLoading: true,
-      keyword: "bar",
     });
     this.performSearch(this.state.map);
-    const history_check = await HistoryServices.getAllHistory();
-    console.log(history_check);
     
   }
 
-  render() {
-    if(this.state.isLoading) {
-      return(
-        <BaseLayout>
-          <div className="h-screen">
-            <Loading/>
-          </div>
-        </BaseLayout>
-      )
-    } else {
-      return(
-        <BaseLayout>
-          <Button className="h-10 z-10" intent={Intent.WARNING} onClick={this.buttonHandler}>Test Search</Button>
-          <Map
-            style={{position: 'absolute', top: '5.5rem'}}
-            google={this.props.google}
-            zoom={15}
-            initialCenter={{ lat: -33.867, lng: 151.195}}
-            onReady={this.onReadyHandler}
-          >
-          {this.state.places.map((item, index) => (
-            <Marker name={item.name} position={item.location} key={index}/>
-          ))}
-          <Polyline 
-            path={this.state.directions}
-            strokeColor="#0000FF"
-            strokeOpacity={0.8}
-            strokeWeight={2} 
-          />
-          </Map>
-        </BaseLayout>
-      )
+  inputCheck = () => {
+    const { origin, destination, keyword } = this.state;
+    if (origin.length === 0) {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Source cannot be empty!"
+      });
+      return false;
     }
+
+    if (origin.length > 100) {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Source is too long!"
+      });
+      return false;
+    }
+
+    if (destination.length === 0) {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Destination cannot be empty!"
+      });
+      return false;
+    }
+
+    if (destination.length > 100) {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Destination is too long!"
+      });
+      return false;
+    }
+
+    if (keyword.length === 0) {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Keyword cannot be empty!"
+      });
+      return false;
+    }
+
+    if (keyword.length > 100) {
+      AppToaster.show({
+        intent: Intent.DANGER,
+        message: "Keyword is too long!"
+      });
+      return false;
+    }
+
+    return true;
   }
 }
 

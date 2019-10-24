@@ -21,6 +21,7 @@ export default class AppRouterNoAuth extends React.PureComponent {
             <Router>
                 <Route exact path = "/" component = {Home} />
                 <Route path = "/login" component = {AppRouter} />
+                <Route path = "/profile" component = {AppRouter} />
                 <Route path = "/callback" component = {Callback} />
             </Router>
         );

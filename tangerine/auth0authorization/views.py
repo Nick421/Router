@@ -100,7 +100,7 @@ def private_history(request):
             user = Auth0User(subject=user_id)
             # construct the database entry
             hist = History(
-                source=post_data['Source'], destination=post_data['Destination'], keyword=post_data['Keyword'],
+                source=post_data['source'], destination=post_data['destination'], keyword=post_data['keyword'],
                 userID=user)
             # save to database
             hist.save()
@@ -108,7 +108,7 @@ def private_history(request):
         else:
             # raise error if data is not valid
             raise APIException(valid_data.errors)
-        return JsonResponse({'route ID': hist.historyID})
+        return JsonResponse({'historyID': hist.historyID})
 
     return_data = list(History.objects.filter(userID=user_id).values(
         'historyID', 'source', 'destination', 'keyword', 'date'))
@@ -150,14 +150,14 @@ def private_favourite(request):
             user = Auth0User(subject=user_id)
             # construct the database entry
             fav = Favourite(
-                userID=user, historyID=post_data['HistoryID'], name=post_data['Name'])
+                userID=user, historyID=post_data['historyID'], name=post_data['name'])
             # save to database
             fav.save()
             # print(hist.historyID)
         else:
             # raise error if data is not valid
             raise APIException(valid_data.errors)
-        return JsonResponse({'fav ID': fav.id})
+        return JsonResponse({'favouriteID': fav.id})
 
     return_data = list()
 

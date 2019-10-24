@@ -1,100 +1,112 @@
-import * as React from "react";
-import { HistoryPopUp } from "./HistoryPopUp";
+import React from "react";
+import { Classes, Overlay, Button, Intent } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
+
+import * as FavouriteServices from "../../services/favourite/favourite";
+import * as HistoryServices from "../../services/history/history";
+import Loading from "../base/loading/Loading";
 
 export default class History extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      historyList: [],
       isOpen: false,
-
-      maps: [
-        {
-          id: 1,
-          name: "less long trip",
-          start: "Sydney",
-          end: "Melbourne",
-          date: "13/10/2019"
-        },
-        {
-          id: 2,
-          name: "Very long trip",
-          start: "Melbourne",
-          end: "Sydney",
-          date: "13/10/2019"
-        },
-        {
-          id: 3,
-          name: "the same trip?",
-          start: "Sasdy",
-          end: "Measdrne",
-          date: "13/10/2019"
-        }
-      ]
+      isLoading: false,
     };
   }
 
-  handleDelete = itemId => {
-    const items = this.state.maps.filter(maps => maps.id !== itemId);
-    this.setState({ maps: items });
-  };
-
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    await this.loadHistory();
+    console.log(this.state.historyList);
+  }
 
   render() {
-    return (
-      <div>
-        <div>
-          <div
-              className="bg-cover bg-center shadow overflow-hidden h-100 w-40 text-center item-center"
-              style={{
-                backgroundColor: "white",
-                position: "fixed",
-                left: "25%",
-                top: "5.5rem",
-                height: "50rem",
-                width: "50%",
-                borderColor: "black",
-                borderWidth: "0.1rem",
-                opacity: "0.9"
-              }}
-          > 
 
-          <h1
-            className="block p-10 text-xl text-grey-darker text-center font-bold border-purple hover:bg-grey-lighter border-r-4"
-            style={{
-              fontSize: "2.5rem",
-              fontFamily: "alegreya",
-              color: "black",
-              textDecoration: "none"
-            }}
-           >
-            {" "}
-             History{" "}
-            </h1>
-          
-            {this.state.maps.map((trip, index) => (
-              <HistoryPopUp
-                key={index}
-                 id={trip.id}
-                 start={trip.start}
-                 end={trip.end}
-                 name={trip.name}
-                 onDelete={this.handleDelete}
-                 trip={trip}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+    return (
+      <Overlay
+        className={`${Classes.OVERLAY_SCROLL_CONTAINER} flex h-screen absolute items-center justify-center`}
+        canEscapeKeyClose={true}
+        canOutsideClickClose={false}
+        isOpen={this.props.isOpen}
+        onClose={this.props.closeHandler}
+        transitionName={Classes.OVERLAY_SCROLL_CONTAINER}
+      >
+        { this.state.isLoading ? <Loading/> : this.renderTable() }
+      </Overlay>
     );
   }
 
-  returnName(trip) {
-    return trip.name;
+  renderTable = () => {
+    return (
+      <div className="flex flex-col bg-white text-center w-96 justify-center items-center px-8 pt-8 pb-16">
+        <div className="px-2 py-2 right-0 top-0 absolute"> 
+          <Button
+              className="focus:outline-none"
+              icon={IconNames.CROSS}
+              minimal={true}
+              onClick={this.props.closeHandler}
+          />
+        </div>
+        <p className="text-3xl text-bold text-orange-600 pb-8">History</p>
+        <table className="bp3-html-table .modifier w-full">
+          <thead>
+            <tr>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Keywords</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderTableBody()}
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
-  renderCollectionList() {
-    var testdata = this.createTestData();
-    testdata.maps.map(trip => <li>{trip.name}</li>);
+  renderTableBody = () => {
+    const renderHistory = this.state.historyList.map((item) => (
+      <tr key={item.historyID}>
+        <td className="truncate">{item.source}</td>
+        <td className="truncate">{item.destination}</td>
+        <td className="truncate">{item.keyword}</td>
+        <td className="truncate">{item.date}</td>
+        <td className="flex flex-row w-12 mr-4">
+          <Button 
+            className="mx-2"
+            icon={IconNames.STAR_EMPTY}
+            intent={Intent.SUCCESS}
+            onClick={() => this.saveFavourite(item.historyID)}
+          />
+          <Button 
+            icon={IconNames.CROSS}
+            intent={Intent.DANGER}
+          />
+        </td>
+      </tr>
+    ));
+    return renderHistory;
+  }
+
+  loadHistory = async () => {
+    const historyList = (await HistoryServices.getAllHistory()) || [];
+    this.setState({
+      historyList,
+      isLoading: false,
+    });
+    return;
+  }
+
+  saveFavourite = async (historyID) => {
+    const routeData = {
+      historyID: historyID,
+      name: "",
+    }
+    const favouriteID = await FavouriteServices.saveFavourite(routeData);
+    console.log(favouriteID);
   }
 }

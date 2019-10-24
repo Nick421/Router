@@ -13,7 +13,7 @@ export default class NavBar extends React.PureComponent {
         };
 
         return (
-            <Navbar className={`${Classes.DARK} w-screen`} style={navbarStyle}>
+            <Navbar className={`${Classes.DARK} w-screen absolute z-20`} style={navbarStyle}>
                 <Navbar.Group align={Alignment.LEFT}>
                     <SideBar/>
                 <Link to="/" className="flex pt-2 pl-2 justify-center focus:outline-none hover:">
