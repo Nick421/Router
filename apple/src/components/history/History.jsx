@@ -39,9 +39,10 @@ export default class History extends React.Component {
     return (
       <Overlay
         className={`${Classes.OVERLAY_SCROLL_CONTAINER} flex h-screen absolute items-center justify-center`}
-        // isOpen={this.props.isOpen}
-        isOpen={true}
-        onClose={this.closeHandler}
+        canEscapeKeyClose={true}
+        canOutsideClickClose={false}
+        isOpen={this.props.isOpen}
+        onClose={this.props.closeHandler}
         transitionName={Classes.OVERLAY_SCROLL_CONTAINER}
       >
         {this.renderTable()}
@@ -52,6 +53,14 @@ export default class History extends React.Component {
   renderTable = () => {
     return (
       <div className="flex flex-col bg-white text-center md:w-1/2 sm:w-64 justify-center items-center px-8 pt-8 pb-16">
+        <div className="px-2 py-2 right-0 top-0 absolute">
+          <Button
+              className="focus:outline-none"
+              icon={IconNames.CROSS}
+              minimal={true}
+              onClick={this.props.closeHandler}
+          />
+        </div>
         <p className="text-3xl text-bold text-orange-600 pb-8">History</p>
         <table className="bp3-html-table .modifier w-full">
           <thead>

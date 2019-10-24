@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, InputGroup, Intent } from "@blueprintjs/core";
+import { Button, Colors, InputGroup, Intent } from "@blueprintjs/core";
 
 export default class SearchBox extends React.PureComponent {
   constructor(props) {
@@ -13,7 +13,10 @@ export default class SearchBox extends React.PureComponent {
 
   render() {
     return (
-      <div className="flex w-screen relative items-center px-4 h-16 bg-white justify-center z-10">
+      <div
+        className="flex w-screen relative items-start pt-1 px-4 h-12 justify-center z-10"
+        style={{ backgroundColor: Colors.DARK_GRAY1 }}
+      >
         <div className="flex flex-row">
           <InputGroup
             className="mx-2 w-56"

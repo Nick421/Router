@@ -60,7 +60,7 @@ export class MapComponent extends React.Component {
             searchHandler={this.buttonHandler}
           />
           <Map
-            style={{position: 'absolute', top: '7rem'}}
+            style={{position: 'absolute', top: "6.125rem"}}
             google={this.props.google}
             zoom={15}
             initialCenter={{ lat: -33.867, lng: 151.195}}
