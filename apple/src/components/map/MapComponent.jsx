@@ -19,7 +19,7 @@ export class MapComponent extends React.Component {
       directions: [],
       start: null,
       end: null,
-      origin: "Green Square Station, Sydney",
+      origin: "UTS, Sydney",
       destination: "Central Station, Sydney",
       keyword: "Food",
       places: [],
@@ -117,7 +117,13 @@ export class MapComponent extends React.Component {
     for(const value of nearbyPlaces.values()) {
       this.state.places.push({name : value.name, location: value.geometry.location});
     }
-    console.log(this.state.places);
+    const routeData = {
+      source: this.state.origin,
+      destination: this.state.destination,
+      keyword: this.state.keyword,
+    }
+    const routeID = await HistoryServices.saveHistory(routeData);
+    console.log(routeID);
     this.setState({
       directions: directions,
       start: directions[0],
@@ -173,8 +179,6 @@ export class MapComponent extends React.Component {
       isLoading: true,
     });
     this.performSearch(this.state.map);
-    const history_check = await HistoryServices.getAllHistory();
-    console.log(history_check);
     
   }
 
