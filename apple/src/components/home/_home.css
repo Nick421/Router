@@ -82,7 +82,7 @@
 }
 
 .img-box{
-    width: 450px;
+    width: 600px;
     height: 500px;
     border-radius: 50%;
     background-position: 50% 50%;
@@ -96,7 +96,7 @@
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    width: 400px;
+    width: 600px;
     height: 400px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -112,7 +112,7 @@
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    width: 600px;
+    width: 700px;
     height: 400px;
     background-position: 50% 50%;
     background-repeat: no-repeat;

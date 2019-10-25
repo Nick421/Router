@@ -6,9 +6,9 @@ const bgImg = require("./images/city-span-down.jpg");
 const xbox = require("./images/xbox.png");
 const city = require("./images/city-across.jpg");
 const rail = require("./images/rail.jpg");
-const routeImg = require("./images/HomeImg1.png");
-const favouriteImg = require("./images/HomeImg2.png");
-const historyImg = require("./images/HomeImg3.png");
+const routeImg = require("./images/HomeImg1.jpg");
+const favouriteImg = require("./images/HomeImg2.jpg");
+const historyImg = require("./images/HomeImg3.jpg");
 
 function demoAsyncCall() {
   return new Promise(resolve => setTimeout(() => resolve(), 2500));
