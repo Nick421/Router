@@ -43,15 +43,4 @@ class History(models.Model):
     date = models.DateField(auto_now_add=True, null=False)
     userID = models.ForeignKey(
         'Auth0User', null=False, on_delete=models.CASCADE)
-
-
-class Favourite(models.Model):
-    class Meta:
-        unique_together = (('userID', 'historyID'),)
-
-    name = models.CharField(max_length=50, blank=True)
-    userID = models.ForeignKey(
-        'Auth0User', null=False, on_delete=models.CASCADE)
-    historyID = models.ForeignKey(
-        'History', null=False, on_delete=models.CASCADE)
-
+    favourite = models.BooleanField(default=False, null=False, blank=False)
