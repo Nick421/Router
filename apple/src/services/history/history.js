@@ -9,3 +9,7 @@ export async function getAllHistory() {
 export async function saveHistory(routeData) {
     return (await AuthAxios.authaxiosInstance.post(BASE_URL, routeData)).data.historyID;
 }
+
+export async function deleteHistory(routeData) {
+    return (await AuthAxios.authaxiosInstance.delete(BASE_URL, routeData)).data.historyID;
+}
