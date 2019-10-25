@@ -2,6 +2,7 @@ import React from "react";
 import { Classes, Overlay, Button, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
+import * as HistoryServices from "../../services/history/history";
 import * as FavouriteServices from "../../services/favourite/favourite";
 import Loading from "../base/loading/Loading";
 
@@ -17,9 +18,7 @@ export default class Favourites extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ isLoading: true });
-    await this.loadFavourites();
-    console.log(this.state.favouriteList);
+    await this.updateList();
   }
 
   render() {
@@ -32,7 +31,7 @@ export default class Favourites extends React.Component {
         onClose={this.props.closeHandler}
         transitionName={Classes.OVERLAY_SCROLL_CONTAINER}
       >
-        { this.state.isLoading ? <Loading/> : this.renderTable() }
+        { this.renderTable() }
       </Overlay>
     );
   }
@@ -50,31 +49,34 @@ export default class Favourites extends React.Component {
         </div>
         <p className="text-3xl text-bold text-orange-600 pb-8">Favourites</p>
         <table className="bp3-html-table .modifier w-full">
-          <thead>
-            <tr>
-              <th>Origin</th>
-              <th>Destination</th>
-              <th>Keywords</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.renderTableBody()}
-          </tbody>
-        </table>
+        <thead>
+          <tr>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Keywords</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          { this.state.isLoading ? null : this.renderTableBody() }
+        </tbody>
+      </table>
       </div>
     )
   }
 
   renderTableBody = () => {
     const renderFavourites = this.state.favouriteList.map((item) => (
-      <tr key={item[1][0]}>
-        <td className="truncate">{item[1][1]}</td>
-        <td className="truncate">{item[1][2]}</td>
-        <td className="truncate">{item[1][3]}</td>
+      <tr key={item.historyID}>
+        <td className="truncate">{item.source}</td>
+        <td className="truncate">{item.destination}</td>
+        <td className="truncate">{item.keyword}</td>
+        <td className="truncate">{item.date}</td>
         <td className="flex flex-row w-12 mr-4">
           <Button 
             icon={IconNames.CROSS}
             intent={Intent.DANGER}
+            onClick={() => this.removeFavourite(item.historyID)}
           />
         </td>
       </tr>
@@ -82,11 +84,28 @@ export default class Favourites extends React.Component {
     return renderFavourites;
   }
 
+  updateList = async () => {
+    this.setState({ isLoading: true });
+    await this.loadFavourites();
+  }
+
   loadFavourites = async () => {
-    const favouriteList = await FavouriteServices.getAllFavourites();
+    const historyList = (await HistoryServices.getAllHistory()) || [];
+    const favouriteList = [];
+    historyList.forEach((item) => {
+      if (item.favourite) {
+        favouriteList.push(item);
+      }
+    });
+
     this.setState({
       favouriteList,
       isLoading: false,
     });
+  } 
+
+  removeFavourite = async (historyID) => {
+    await FavouriteServices.deleteFavourite({data: {historyID: historyID}});
+    await this.updateList();
   }
 }

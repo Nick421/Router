@@ -57,9 +57,15 @@ export default class Profile extends React.PureComponent {
     }
 
     getUserServiceData = async () => {
-        const [ historyList, favouriteList ] = await Promise.all([HistoryServices.getAllHistory(), FavouriteServices.getAllFavourites()]);
+        const historyList = (await HistoryServices.getAllHistory()) || [];
+        let favouriteCount = 0;
+        historyList.forEach((item) => {
+            if (item.favourite) {
+                favouriteCount++;
+            }
+        })
         this.setState({
-            favouriteCount: favouriteList.length,
+            favouriteCount,
             historyCount: historyList.length,
             isLoading: false,
         });

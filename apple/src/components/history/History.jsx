@@ -18,9 +18,7 @@ export default class History extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ isLoading: true });
-    await this.loadHistory();
-    console.log(this.state.historyList);
+    await this.updateList();
   }
 
   render() {
@@ -34,7 +32,7 @@ export default class History extends React.Component {
         onClose={this.props.closeHandler}
         transitionName={Classes.OVERLAY_SCROLL_CONTAINER}
       >
-        { this.state.isLoading ? <Loading/> : this.renderTable() }
+        { this.renderTable() }
       </Overlay>
     );
   }
@@ -61,7 +59,7 @@ export default class History extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.renderTableBody()}
+            { this.state.isLoading ? null : this.renderTableBody() }
           </tbody>
         </table>
       </div>
@@ -78,6 +76,7 @@ export default class History extends React.Component {
         <td className="flex flex-row w-12 mr-4">
           <Button 
             className="mx-2"
+            disabled={ item.favourite ? true : false }
             icon={IconNames.STAR_EMPTY}
             intent={Intent.SUCCESS}
             onClick={() => this.saveFavourite(item.historyID)}
@@ -85,11 +84,17 @@ export default class History extends React.Component {
           <Button 
             icon={IconNames.CROSS}
             intent={Intent.DANGER}
+            onClick={() => this.deleteHistory(item.historyID)}
           />
         </td>
       </tr>
     ));
     return renderHistory;
+  }
+
+  updateList = async () => {
+    this.setState({ isLoading: true });
+    await this.loadHistory();
   }
 
   loadHistory = async () => {
@@ -102,11 +107,12 @@ export default class History extends React.Component {
   }
 
   saveFavourite = async (historyID) => {
-    const routeData = {
-      historyID: historyID,
-      name: "",
-    }
-    const favouriteID = await FavouriteServices.saveFavourite(routeData);
-    console.log(favouriteID);
+    await FavouriteServices.saveFavourite({historyID: historyID});
+    await this.updateList();
+  }
+
+  deleteHistory = async (historyID) => {
+    await HistoryServices.deleteHistory({data: {historyID: historyID}});
+    await this.updateList();
   }
 }
