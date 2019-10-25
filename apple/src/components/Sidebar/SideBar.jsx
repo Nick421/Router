@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button, Intent } from "@blueprintjs/core";
-import Favourites from "./../Favourites/Favourites";
+import Favourites from "../favourites/Favourites";
 import History from "./../history/History";
 
 export default class SideBar extends React.Component {
@@ -12,6 +12,8 @@ export default class SideBar extends React.Component {
             isHistoryOpen: false,
             isFavouriteOpen: false,
             isAccountDetailOpen: false,
+            updateHistory: 0,
+            updateFavourite: 0,
         }
     }
 
@@ -49,10 +51,12 @@ export default class SideBar extends React.Component {
                 <Favourites
                     isOpen={this.state.isFavouriteOpen}
                     closeHandler={this.handleFavouriteClick}
+                    updateFavourite={this.state.updateFavourite}
                 />
                 <History
                     isOpen={this.state.isHistoryOpen}
                     closeHandler={this.handleHistoryClick}
+                    updateHistory={this.state.updateHistory}
                 />
             </div>
         )
@@ -73,15 +77,23 @@ export default class SideBar extends React.Component {
 
 
     handleClick = () => {
-        this.setState(state => ({ isOpen: !state.isOpen }));
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
     }
 
     handleHistoryClick = () => {
-        this.setState(state => ({ isHistoryOpen: !state.isHistoryOpen }));
+        this.setState({
+            updateFavourite: this.state.updateFavourite + 1,
+            isHistoryOpen: !this.state.isHistoryOpen,
+        });
     }
 
     handleFavouriteClick = () => {
-        this.setState(state => ({ isFavouriteOpen: !state.isFavouriteOpen }));
+        this.setState({
+            updateHistory: this.state.updateHistory + 1,
+            isFavouriteOpen: !this.state.isFavouriteOpen,
+        });
     }
 }
 
