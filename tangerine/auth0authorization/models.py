@@ -5,18 +5,18 @@ from django.contrib.auth.models import (
 
 
 class RemoteUserManager(BaseUserManager):
-    def create_user(self, subject, password):
-        if not subject:
+    def create_user(self, userID, password):
+        if not userID:
             raise ValueError('Users must have a subject')
         user = self.model(
-            subject=subject
+            userID=userID
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, subject, password):
-        user = self.create_user(subject=subject, password=password)
+    def create_superuser(self, userID, password):
+        user = self.create_user(userID=userID, password=password)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -24,10 +24,11 @@ class RemoteUserManager(BaseUserManager):
 
 
 class Auth0User(AbstractBaseUser, PermissionsMixin):
-    subject = models.CharField(max_length=35, unique=True, primary_key=True)
+    userID = models.CharField(
+        max_length=35, unique=True, primary_key=True, db_column='userID')
 
     objects = RemoteUserManager()
-    USERNAME_FIELD = 'subject'
+    USERNAME_FIELD = 'userID'
     REQUIRED_FIELDS = []
 
     def save(self, *args, **kwargs):
@@ -42,5 +43,5 @@ class History(models.Model):
     keyword = models.CharField(max_length=100, null=False, blank=False)
     date = models.DateField(auto_now_add=True, null=False)
     userID = models.ForeignKey(
-        'Auth0User', null=False, on_delete=models.CASCADE)
+        Auth0User, null=False, on_delete=models.CASCADE, db_column='userID')
     favourite = models.BooleanField(default=False, null=False, blank=False)
