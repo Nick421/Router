@@ -16,7 +16,7 @@ function demoAsyncCall() {
 
 class Home extends React.Component {
   state = {
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
@@ -28,6 +28,7 @@ class Home extends React.Component {
     console.log("redir");
     this.props.history.push("/login");
   };
+
 
   render() {
     const { loading } = this.state;
@@ -98,32 +99,34 @@ class Home extends React.Component {
           style={{ backgroundImage: `url(${city})` }}
         >
           ><h1 className="text-6xl text-orange-400 py-1">Features</h1>
-          <div className="flex mb-4">
-            <div className="w-full bg-gray-500 h-15">
-              <div className="flex -mx-2">
+
+          <div className="features-container">
+            <div className="w-full opacity-45 h-15">
+              <div className="flex -mx-2 ">
                 <div className="img-box">
                   <div className="features-font">
                     1. Find new local attractions
                   </div>
-                  <img src={routeImg} alt="Local Atrractions" className="img img:hover"></img>
+                  <img src={routeImg} alt="Local Atrractions" className="img"></img>
                 </div>
 
                 <div className="img-box">
                   <div className="features-font">
                     2. Travel in exciting new ways
                   </div>
-                  <img src={favouriteImg} alt="Blacklist" className="img img:hover"></img>
+                  <img src={favouriteImg} alt="Blacklist" className="img"></img>
                 </div>
 
                 <div className="img-box">
                   <div className="features-font">
-                    3. Personalise for you
+                    3. Personalised for you
                   </div>
-                  <img src={historyImg} alt="personalise" className="img img:hover"></img>
+                  <img src={historyImg} alt="personalise" className="img-history"></img>
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
+
         </section>
 
       </div>
