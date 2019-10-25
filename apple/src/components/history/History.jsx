@@ -100,7 +100,7 @@ export default class History extends React.Component {
   loadHistory = async () => {
     const historyList = (await HistoryServices.getAllHistory()) || [];
     this.setState({
-      historyList,
+      historyList: historyList.sort((a, b) => { return b.historyID - a.historyID; }),
       isLoading: false,
     });
     return;

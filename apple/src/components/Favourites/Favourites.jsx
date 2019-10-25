@@ -99,7 +99,7 @@ export default class Favourites extends React.Component {
     });
 
     this.setState({
-      favouriteList,
+      favouriteList: favouriteList.sort((a, b) => { return b.historyID - a.historyID; }),
       isLoading: false,
     });
   } 
