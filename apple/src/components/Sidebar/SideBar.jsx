@@ -1,11 +1,11 @@
-import * as React from "react";
+import React from "react";
 
-import{ Button, Colors, Intent } from "@blueprintjs/core";
-import Favourites from "./../favourites/Favourites";
+import { Button, Intent } from "@blueprintjs/core";
+import Favourites from "./../Favourites/Favourites";
 import History from "./../history/History";
 
-export default class SideBar extends React.Component{
-    constructor(props){
+export default class SideBar extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
@@ -15,25 +15,25 @@ export default class SideBar extends React.Component{
         }
     }
 
-    render(){
+    render() {
         const menuTextStyle = { fontFamily: "alegreya", color: "white" };
         const renderMenu = (
             <div>
-                <div 
+                <div
                     className="flex justify-center absolute bg-orange-500 bg-center left-0 z-20 w-56"
-                    style={{ opacity: "1", top: '3.125rem', height: '50rem'}}>        
+                    style={{ opacity: "1", top: '3.125rem', height: '50rem' }}>
                     <ul>
                         <li>
                             <a
-                                className="block py-8 text-2xl text-grey-darker text-white font-bold" 
-                                onClick={this.handleFavouriteClick} 
+                                className="block py-8 text-2xl text-grey-darker text-white font-bold"
+                                onClick={this.handleFavouriteClick}
                                 style={menuTextStyle}>
                                 Favourites
                             </a>
                         </li>
                         <li>
                             <a
-                                className="block py-8 text-2xl text-grey-darker text-white font-bold" 
+                                className="block py-8 text-2xl text-grey-darker text-white font-bold"
                                 onClick={this.handleHistoryClick}
                                 style={menuTextStyle}
                             >
@@ -58,30 +58,30 @@ export default class SideBar extends React.Component{
         )
 
         return (
-             <div>
+            <div>
                 <Button
-                    className="font-bold mr-2" 
+                    className="font-bold mr-2"
                     intent={Intent.WARNING}
                     onClick={this.handleClick}
                 >
                     Menu
                 </Button>
-                { this.state.isOpen ? renderMenu : null }
-            </div>   
+                {this.state.isOpen ? renderMenu : null}
+            </div>
         );
     }
-    
+
 
     handleClick = () => {
-        this.setState(state => ({isOpen: !state.isOpen}));
+        this.setState(state => ({ isOpen: !state.isOpen }));
     }
 
     handleHistoryClick = () => {
-        this.setState(state => ({isHistoryOpen: !state.isHistoryOpen}));
+        this.setState(state => ({ isHistoryOpen: !state.isHistoryOpen }));
     }
 
     handleFavouriteClick = () => {
-        this.setState(state => ({isFavouriteOpen: !state.isFavouriteOpen}));
+        this.setState(state => ({ isFavouriteOpen: !state.isFavouriteOpen }));
     }
 }
 

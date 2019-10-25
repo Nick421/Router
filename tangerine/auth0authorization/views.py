@@ -12,7 +12,7 @@ from six.moves.urllib import request as req
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 
-from .models import Auth0User, History, Favourite
+from .models import Auth0User, History
 from .serializers import HistorySerializers, FavouriteSerializers
 
 
@@ -81,7 +81,7 @@ store the route and return route id
 """
 
 
-@api_view(["GET", "POST"])
+@api_view(["GET", "POST", "DELETE"])
 @parser_classes([JSONParser])
 # @requires_scope("read:history")
 def private_history(request):
@@ -110,12 +110,26 @@ def private_history(request):
             raise APIException(valid_data.errors)
         return JsonResponse({'historyID': hist.historyID})
 
+    if request.method == 'DELETE':
+         # validating the JSON before adding in to the database
+        valid_data = FavouriteSerializers(data=request.data)
+        if valid_data.is_valid():
+            # print("data is valid!")
+            post_data = valid_data.validated_data
+            user = Auth0User(subject=user_id)
+
+            History.objects.filter(
+                userID=user, historyID=post_data['historyID']).delete()
+        else:
+            # raise error if data is not valid
+            raise APIException(valid_data.errors)
+        return JsonResponse({'historyID':  post_data['historyID']})
+
     return_data = list(History.objects.filter(userID=user_id).values(
-        'historyID', 'source', 'destination', 'keyword', 'date'))
+        'historyID', 'source', 'destination', 'keyword', 'date', 'favourite'))
     return JsonResponse(return_data, safe=False)
 
 
-# TODO
 """
 This method will parse the token to get subject to store as user_id
 Then it will query the database for history table using user_id as foreign key
@@ -128,11 +142,7 @@ store the user_id and history_id
 """
 
 
-def getHist(histID):
-    return list(History.objects.filter(historyID='historyID').values('source', 'destination', 'keyword'))
-
-
-@api_view(["GET", "POST"])
+@api_view(["POST", "DELETE"])
 # @requires_scope("read:favourite")
 def private_favourite(request):
     # Decode the token
@@ -148,23 +158,29 @@ def private_favourite(request):
             # print("data is valid!")
             post_data = valid_data.validated_data
             user = Auth0User(subject=user_id)
-            # construct the database entry
-            fav = Favourite(
-                userID=user, historyID=post_data['historyID'], name=post_data['name'])
-            # save to database
-            fav.save()
-            # print(hist.historyID)
+
+            History.objects.filter(
+                userID=user, historyID=post_data['historyID']).update(favourite=True)
+            # print(History.objects.filter(userID=user,
+            #                              historyID=post_data['historyID']))
         else:
             # raise error if data is not valid
             raise APIException(valid_data.errors)
-        return JsonResponse({'favouriteID': fav.id})
+        return JsonResponse({'message': "Favourite saved!"})
 
-    return_data = list()
+    if request.method == 'DELETE':
+         # validating the JSON before adding in to the database
+        valid_data = FavouriteSerializers(data=request.data)
+        if valid_data.is_valid():
+            # print("data is valid!")
+            post_data = valid_data.validated_data
+            user = Auth0User(subject=user_id)
 
-    for fav in Favourite.objects.filter(userID=user_id):
-        fav_list = list()
-        fav_list.append(fav.name)
-        fav_list.append([fav.historyID.historyID,fav.historyID.source, fav.historyID.destination, fav.historyID.keyword])
-        return_data.append(fav_list)
-
-    return JsonResponse(return_data, safe=False)
+            History.objects.filter(
+                userID=user, historyID=post_data['historyID']).update(favourite=False)
+            # print(History.objects.filter(userID=user,
+            #                              historyID=post_data['historyID']))
+        else:
+            # raise error if data is not valid
+            raise APIException(valid_data.errors)
+        return JsonResponse({'message': "Favourite delete!"})

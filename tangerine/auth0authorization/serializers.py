@@ -17,13 +17,7 @@ class HistorySerializers(serializers.Serializer):
     destination = serializers.CharField(required=True, max_length=100)
     keyword = serializers.CharField(required=True, max_length=100)
 
-    # read_only=True
-
 
 class FavouriteSerializers(serializers.Serializer):
-    name = serializers.CharField(required=False, max_length=50, allow_blank=True)
-    historyID = serializers.SlugRelatedField(slug_field='historyID', queryset=History.objects.all())
-   # userID = serializers.SlugRelatedField(slug_field='userID', queryset=History.objects.all())
-
-
-
+    # name = serializers.CharField(required=False, max_length=50, allow_blank=True)
+    historyID = serializers.IntegerField(required=True)
