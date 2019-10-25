@@ -97,7 +97,7 @@ def private_history(request):
         if valid_data.is_valid():
             # print("data is valid!")
             post_data = valid_data.validated_data
-            user = Auth0User(subject=user_id)
+            user = Auth0User(userID=user_id)
             # construct the database entry
             hist = History(
                 source=post_data['source'], destination=post_data['destination'], keyword=post_data['keyword'],
@@ -116,7 +116,7 @@ def private_history(request):
         if valid_data.is_valid():
             # print("data is valid!")
             post_data = valid_data.validated_data
-            user = Auth0User(subject=user_id)
+            user = Auth0User(userID=user_id)
 
             History.objects.filter(
                 userID=user, historyID=post_data['historyID']).delete()
@@ -157,7 +157,7 @@ def private_favourite(request):
         if valid_data.is_valid():
             # print("data is valid!")
             post_data = valid_data.validated_data
-            user = Auth0User(subject=user_id)
+            user = Auth0User(userID=user_id)
 
             History.objects.filter(
                 userID=user, historyID=post_data['historyID']).update(favourite=True)
@@ -174,7 +174,7 @@ def private_favourite(request):
         if valid_data.is_valid():
             # print("data is valid!")
             post_data = valid_data.validated_data
-            user = Auth0User(subject=user_id)
+            user = Auth0User(userID=user_id)
 
             History.objects.filter(
                 userID=user, historyID=post_data['historyID']).update(favourite=False)
