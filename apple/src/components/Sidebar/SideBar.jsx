@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button, Intent } from "@blueprintjs/core";
-import Favourites from "../favourites/Favourites";
+import Favourites from "../Favourites/Favourites";
 import History from "./../history/History";
 
 export default class SideBar extends React.Component {
