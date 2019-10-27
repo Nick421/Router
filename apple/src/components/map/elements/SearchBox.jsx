@@ -14,8 +14,8 @@ export default class SearchBox extends React.PureComponent {
   render() {
     return (
       <div
-        className="flex w-screen relative items-start pt-1 px-4 h-12 justify-center z-10"
-        style={{ backgroundColor: Colors.DARK_GRAY1 }}
+        className="flex w-screen absolute items-start pt-1 px-4 h-12 justify-center z-10"
+        style={{ backgroundColor: Colors.DARK_GRAY1, top: "3.15rem" }}
       >
         <div className="flex flex-row">
           <InputGroup

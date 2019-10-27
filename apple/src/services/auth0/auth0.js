@@ -74,7 +74,6 @@ function renewTokenCallBack(resolve, reject) {
 }
 
 export function parseLogin() {
-  console.log(window.location.hash);
   return new Promise((resolve, reject) => {
     auth0.parseHash({ hash: window.location.hash }, renewTokenCallBack(resolve, reject));
   });

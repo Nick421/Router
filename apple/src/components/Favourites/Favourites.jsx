@@ -4,7 +4,6 @@ import { IconNames } from "@blueprintjs/icons";
 
 import * as HistoryServices from "../../services/history/history";
 import * as FavouriteServices from "../../services/favourite/favourite";
-import Loading from "../base/loading/Loading";
 
 export default class Favourites extends React.Component {
   constructor(props) {
