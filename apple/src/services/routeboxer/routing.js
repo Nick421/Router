@@ -51,7 +51,7 @@ async function searchBound(bound, keyword, placeServices) {
   const placesMap = new Map();
   for (var i = 0; i < bound.length; i++) {
     await performSearch(bound[i], keyword, placeServices)
-      .catch((error) => {console.log(error)})
+      .catch((error) => {})
       .then((value) => {
         if(!value) return;
         for (let j = 0; j < value.length; j++) {

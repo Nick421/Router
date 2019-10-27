@@ -123,7 +123,6 @@ export class MapComponent extends React.Component {
       keyword: this.state.keyword,
     }
     const routeID = await HistoryServices.saveHistory(routeData);
-    console.log(routeID);
     this.setState({
       directions: directions,
       start: directions[0],
