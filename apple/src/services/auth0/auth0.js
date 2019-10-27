@@ -3,12 +3,12 @@ import * as Config from "../../config/config";
 
 
 const auth0 = new Auth0.WebAuth({
-  clientID: Config.CLIENT_ID,
-  domain: Config.DOMAIN,
-  responseType: Config.RESPONSE_TYPE,
-  audience: Config.AUDIENCE,
-  redirectUri: Config.CALLBACK_URL,
-  scope: Config.SCOPE,
+  clientID: process.env.REACT_APP_CLIENT_ID,
+  domain: process.env.REACT_APP_DOMAIN,
+  responseType: process.env.REACT_APP_RESPONSE_TYPE,
+  audience: process.env.REACT_APP_AUDIENCE,
+  redirectUri: process.env.REACT_APP_CALLBACK_URL,
+  scope: process.env.REACT_APP_SCOPE,
 });
 
 let idToken = null;

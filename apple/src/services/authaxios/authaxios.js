@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const authaxiosInstance = axios.create({
-  baseURL: "http://3.24.181.251:8000/api",
+  baseURL: process.env.REACT_APP_API_URI,
 });
 
 export function setBearerToken(accessToken) {
