@@ -5,9 +5,7 @@ echo "Installing dependencies"
 pip install --upgrade pip
 pip install -r ./requirements.txt
 
-echo "Make migrations"
-python manage.py makemigrations
-echo "Make migrate"
+echo "Migrate"
 python manage.py migrate
 echo "Starting server"
 python manage.py runserver
