@@ -11,6 +11,7 @@ const auth0 = new Auth0.WebAuth({
   scope: Config.SCOPE,
 });
 
+let idToken = null;
 let user = null;
 let authFlag = "isLoggedIn";
 let accessToken = null;
