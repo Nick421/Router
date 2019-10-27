@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./dev_env/Scripts/activate
+source ./dev_env/bin/activate
 
 pip install -r ./requirements.txt
 

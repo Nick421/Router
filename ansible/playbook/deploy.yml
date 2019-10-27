@@ -105,7 +105,7 @@
 
       - name: "Install virtualenv"
         become: true
-        command: python3 -m pip install --user virtualenv
+        command: apt install python3-venv -y
     
     # Cloning project repo
 
@@ -121,7 +121,7 @@
           repo: "git@github.sydney.edu.au:Internet-Software-Platform-2019/ELEC3609ProjectGroup14.git"
           dest: "/var/www/project"
           clone: yes
-          key_file: ~/.ssh/3609G14_key
+          key_file: /home/ubuntu/.ssh/3609G14_key
 
       - name: "Apply nginx configurations"
         become: true
@@ -148,6 +148,18 @@
           chdir: /var/www/project/tangerine/
 
       # Starting services
+
+      - name: "Change Django server script permission"
+        become: true
+        file: 
+          dest: /var/www/project/tangerine/run_django.sh
+          mode: +x
+
+      - name: "Start Django server"
+        become: true
+        command: ./run_django.sh
+        args:
+          chdir: /var/www/project/tangerine/
 
       - name: "Start NGINX service"
         become: true
