@@ -154,7 +154,7 @@
 
       - name: "Build react app"
         become: true
-        command: GENERATE_SOURCEMAP=false npm run build
+        shell: npm run build
         args:
           chdir: /var/www/project/apple/
 
