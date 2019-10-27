@@ -98,6 +98,11 @@
 
     # Installing other dependencies and setup env
 
+      - name: "Install PostgreSQL"
+        become: true
+        command: |
+          apt install postgresql postgresql-contrib libpq-dev -y
+
       - name: "Install React"
         become: true
         command: npm install -g react
@@ -157,7 +162,7 @@
 
       - name: "Start Django server"
         become: true
-        command: ./run_django.sh
+        command: sudo ./run_django.sh
         args:
           chdir: /var/www/project/tangerine/
 
