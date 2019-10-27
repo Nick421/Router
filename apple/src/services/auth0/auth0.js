@@ -11,7 +11,6 @@ const auth0 = new Auth0.WebAuth({
   scope: Config.SCOPE,
 });
 
-let idToken = null;
 let user = null;
 let authFlag = "isLoggedIn";
 let accessToken = null;
@@ -47,7 +46,9 @@ export function userLogin() {
 
 export function userLogout() {
   removeLocalLogin();
-  auth0.logout();
+  auth0.logout({
+    returnTo: Config.LOGOUT_URL,
+  });
 }
 
 export function renewToken() {
