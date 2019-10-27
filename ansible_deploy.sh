@@ -5,6 +5,7 @@
 EC2_DNS="ec2-3-24-181-251.ap-southeast-2.compute.amazonaws.com"
 EC2_USER="ubuntu"
 EC2_PEM="dat-pc.pem"
+GIT_KEY="3609G14_key"
 
 # Check if Ansible is installed
 
@@ -27,7 +28,7 @@ then
   echo "ERROR: The required EC2 private key does not exists."
   exit 1
 else
-  echo "Private key found"
+  echo "EC2 private key found"
   echo ""
 fi
 

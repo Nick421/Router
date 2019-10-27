@@ -3,14 +3,17 @@
     remote_user: ubuntu
 
     tasks:
+    
+    # Update and install needed dependencies
+
+      - name: "Update"
+        become: true
+        command: apt update
+
       - name: "Check if NGINX is installed"
         command: dpkg -l nginx
         register: nginx_check
         failed_when: nginx_check.rc >= 2
-
-      - name: "Check return code"
-        debug:
-          msg: "DPKG return code: {{ nginx_check.rc }}"
 
       - name: "Install NGINX"
         become: true
@@ -23,6 +26,128 @@
           - "NGINX found."
           - "Skipping..."
         when: nginx_check.rc == 0
+
+      - name: "Check if Python3 is installed"
+        command: dpkg -l python3
+        register: python3_check
+        failed_when: python3_check.rc >= 2
+
+      - name: "Install Python3"
+        become: true
+        command: apt install python3.6 -y
+        when: python3_check.rc == 1
+
+      - name: "Skip Python3 installation"
+        debug:
+          msg: 
+          - "Python3 found."
+          - "Skipping..."
+        when: python3_check.rc == 0
+
+      - name: "Check if pip is installed"
+        command: dpkg -l python3-pip
+        register: pip_check
+        failed_when: pip_check.rc >= 2
+
+      - name: "Install pip"
+        become: true
+        command: apt install python3-pip -y
+        when: pip_check.rc == 1
+
+      - name: "Skip pip installation"
+        debug:
+          msg: 
+          - "pip found."
+          - "Skipping..."
+        when: pip_check.rc == 0
+
+      - name: "Check if NodeJS is installed"
+        command: dpkg -l nodejs
+        register: nodejs_check
+        failed_when: nodejs_check.rc >= 2
+
+      - name: "Install NodeJS: Download Nodejs"
+        get_url: 
+          url: https://deb.nodesource.com/setup_13.x
+          dest: /tmp/nodejs.sh
+        register: nodejs_download
+        when: nodejs_check.rc == 1
+
+      - name: "Install NodeJS: Change Nodejs script permission"
+        become: true
+        file: 
+          dest: /tmp/nodejs.sh
+          mode: +x
+        register: nodejs_permission
+        when: nodejs_check.rc == 1 and not nodejs_download.failed
+
+      - name: "Install NodeJS: Install Nodejs"
+        become: true
+        command: |
+          /tmp/nodejs.sh
+          apt install -y nodejs
+          apt install -y build-essential
+        when: nodejs_check.rc == 1 and not nodejs_download.failed and not nodejs_permission.failed
+
+      - name: "Skip NodeJS installation"
+        debug:
+          msg: 
+          - "NodeJS found."
+          - "Skipping..."
+        when: nodejs_check.rc == 0
+
+    # Installing other dependencies and setup env
+
+      - name: "Install React"
+        become: true
+        command: npm install -g react
+        when: nodejs_check.rc == 0
+
+      - name: "Install virtualenv"
+        become: true
+        command: python3 -m pip install --user virtualenv
+    
+    # Cloning project repo
+
+      - name: "Clear old build"
+        become: true
+        command: rm -rf /var/www/project
+        args:
+          warn: false
+
+      - name: "Clone"
+        become: true
+        git: 
+          repo: "git@github.sydney.edu.au:Internet-Software-Platform-2019/ELEC3609ProjectGroup14.git"
+          dest: "/var/www/project"
+          clone: yes
+          key_file: ~/.ssh/3609G14_key
+
+      - name: "Apply nginx configurations"
+        become: true
+        command: cp ./default.conf /etc/nginx/conf.d/default.conf
+        args:
+          chdir: /var/www/project/ansible/
+
+      - name: "Install node modules"
+        become: true
+        command: npm install
+        args:
+          chdir: /var/www/project/apple/
+
+      - name: "Build react app"
+        become: true
+        command: npm run build
+        args:
+          chdir: /var/www/project/apple/
+
+      - name: "Make virtualenv"
+        become: true
+        command: python3 -m venv dev_env
+        args:
+          chdir: /var/www/project/tangerine/
+
+      # Starting services
 
       - name: "Start NGINX service"
         become: true
