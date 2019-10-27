@@ -10,5 +10,5 @@ echo "Migrate"
 python manage.py makemigrations
 python manage.py migrate
 echo "Starting server"
-nohup python manage.py runserver </dev/null >/dev/null 2>&1 &
+nohup python manage.py runserver 0.0.0.0:8000 </dev/null >/dev/null 2>&1 &
 
