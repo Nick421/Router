@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const authaxiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "http://3.24.181.251:8000/api",
 });
 
 export function setBearerToken(accessToken) {
