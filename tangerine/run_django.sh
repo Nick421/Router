@@ -5,6 +5,7 @@ echo "Installing dependencies"
 pip install --upgrade pip
 pip install https://pypi.python.org/packages/source/p/psycopg2/psycopg2-2.8.tar.gz
 pip install -r ./requirements.txt
+pip install django-cors-headers
 
 echo "Migrate"
 python manage.py makemigrations
