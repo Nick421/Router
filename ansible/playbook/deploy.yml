@@ -110,7 +110,7 @@
 
       - name: "Install virtualenv"
         become: true
-        command: apt install python3.6 python3-psycopg2 python-virtualenv -y
+        command: apt install python3.6 libpq-dev python3.6-dev python-virtualenv -y
     
     # Cloning project repo
 
@@ -127,6 +127,12 @@
           dest: "/var/www/project"
           clone: yes
           key_file: /home/ubuntu/.ssh/3609G14_key
+
+      - name: "Make virtualenv"
+        become: true
+        command: virtualenv --python=python3.6 dev_env
+        args:
+          chdir: /var/www/project/tangerine/
 
       - name: "Change access permission"
         become: true
@@ -151,12 +157,6 @@
         command: npm run build
         args:
           chdir: /var/www/project/apple/
-
-      - name: "Make virtualenv"
-        become: true
-        command: virtualenv --python=python3.6 dev_env
-        args:
-          chdir: /var/www/project/tangerine/
 
       # Starting services
 
