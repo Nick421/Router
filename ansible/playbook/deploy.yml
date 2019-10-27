@@ -110,7 +110,7 @@
 
       - name: "Install virtualenv"
         become: true
-        command: apt install python3-venv -y
+        command: apt install python3.6 python3-psycopg2 python-virtualenv -y
     
     # Cloning project repo
 
@@ -127,6 +127,12 @@
           dest: "/var/www/project"
           clone: yes
           key_file: /home/ubuntu/.ssh/3609G14_key
+
+      - name: "Change access permission"
+        become: true
+        command: chown ubuntu -R project/
+        args:
+          chdir: /var/www/
 
       - name: "Apply nginx configurations"
         become: true
@@ -148,7 +154,7 @@
 
       - name: "Make virtualenv"
         become: true
-        command: python3 -m venv dev_env
+        command: virtualenv --python=python3.6 dev_env
         args:
           chdir: /var/www/project/tangerine/
 
