@@ -25,7 +25,6 @@ class Home extends React.Component {
   }
 
   redirectHandler = () => {
-    console.log("redir");
     this.props.history.push("/login");
   };
 
