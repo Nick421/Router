@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import MapComponent from "./components/map/MapComponent";
-import Loading from "./components/base/loading/Loading";
 import * as auth from "./services/auth0/auth0";
 import * as AuthAxios from "./services/authaxios/authaxios";
 import Profile from "./components/profile/Profile";
