@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import "./_home.css"; 
 
 const bgImg = require("./images/city-span-down.jpg");
-const xbox = require("./images/xbox.png");
 const city = require("./images/city-across.jpg");
 const rail = require("./images/rail.jpg");
 const routeImg = require("./images/HomeImg1.jpg");
@@ -51,8 +50,6 @@ class Home extends React.Component {
             </div>
             <div className="w-1/4 h-2 bg-white border-round"></div>
             <button
-              // className="mt-16 h-20 flex justify-center items-center w-48 border-orange-400 hover:border-teal-400 hover:text-teal-400 
-              //           focus:outline-none border-4 border-solid rounded-lg text-orange-400 text-2xl select-none"
               className="login login:hover login:focus"
               onClick={this.redirectHandler}
             >

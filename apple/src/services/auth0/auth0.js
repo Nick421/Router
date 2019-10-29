@@ -1,5 +1,4 @@
 import * as Auth0 from "auth0-js";
-import * as Config from "../../config/config";
 
 
 const auth0 = new Auth0.WebAuth({
@@ -11,7 +10,7 @@ const auth0 = new Auth0.WebAuth({
   scope: process.env.REACT_APP_SCOPE,
 });
 
-let idToken = null;
+let idToken;
 let user = null;
 let authFlag = "isLoggedIn";
 let accessToken = null;
@@ -48,7 +47,7 @@ export function userLogin() {
 export function userLogout() {
   removeLocalLogin();
   auth0.logout({
-    returnTo: Config.LOGOUT_URL,
+    returnTo: process.env.REACT_APP_LOGOUT_URL,
   });
 }
 
