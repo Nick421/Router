@@ -31,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "96%-ycg@ay39s9vk0rk0&y&#jgi!9-a1e0_cc^+$diz-6qmdh#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -61,6 +61,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.auth.middleware.RemoteUserMiddleware",
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:80',
+    '3.24.181.251:80',
+)
 
 CORS_ORIGIN_ALLOW_ALL = False
 
