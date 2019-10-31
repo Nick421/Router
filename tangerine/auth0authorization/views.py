@@ -104,7 +104,6 @@ def private_history(request):
                 userID=user)
             # save to database
             hist.save()
-            # print(hist.historyID)
         else:
             # raise error if data is not valid
             raise APIException(valid_data.errors)
@@ -114,7 +113,6 @@ def private_history(request):
          # validating the JSON before adding in to the database
         valid_data = FavouriteSerializers(data=request.data)
         if valid_data.is_valid():
-            # print("data is valid!")
             post_data = valid_data.validated_data
             user = Auth0User(userID=user_id)
 
@@ -161,8 +159,6 @@ def private_favourite(request):
 
             History.objects.filter(
                 userID=user, historyID=post_data['historyID']).update(favourite=True)
-            # print(History.objects.filter(userID=user,
-            #                              historyID=post_data['historyID']))
         else:
             # raise error if data is not valid
             raise APIException(valid_data.errors)
@@ -178,8 +174,6 @@ def private_favourite(request):
 
             History.objects.filter(
                 userID=user, historyID=post_data['historyID']).update(favourite=False)
-            # print(History.objects.filter(userID=user,
-            #                              historyID=post_data['historyID']))
         else:
             # raise error if data is not valid
             raise APIException(valid_data.errors)

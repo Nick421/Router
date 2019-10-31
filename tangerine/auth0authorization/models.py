@@ -3,6 +3,11 @@ from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin, BaseUserManager
 )
 
+"""
+This class is to override RemoteUser class of Django
+so that it conforms to our Auth0 authenticaton
+"""
+
 
 class RemoteUserManager(BaseUserManager):
     def create_user(self, userID, password):
@@ -23,6 +28,12 @@ class RemoteUserManager(BaseUserManager):
         return user
 
 
+"""
+This class is for Auth0User which is use instead of default django user class
+so we can customised the fields that get stored in the database
+"""
+
+
 class Auth0User(AbstractBaseUser, PermissionsMixin):
     userID = models.CharField(
         max_length=35, unique=True, primary_key=True, db_column='userID')
@@ -34,6 +45,11 @@ class Auth0User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super(Auth0User, self).save(*args, **kwargs)
         return self
+
+
+"""
+This class is for History table and defines all column values
+"""
 
 
 class History(models.Model):
