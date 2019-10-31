@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import History
 
+"""
+Serializer for History object 
+Checks if the JSON recevived conforms to the model we define for database
+"""
+
 
 class HistorySerializers(serializers.Serializer):
     source = serializers.CharField(required=True, max_length=100)
@@ -8,6 +13,11 @@ class HistorySerializers(serializers.Serializer):
     keyword = serializers.CharField(required=True, max_length=100)
 
 
+"""
+Serializer for Favourite object 
+Checks if the JSON recevived conforms to the model we define for database
+"""
+
+
 class FavouriteSerializers(serializers.Serializer):
-    # name = serializers.CharField(required=False, max_length=50, allow_blank=True)
     historyID = serializers.IntegerField(required=True)
