@@ -24,6 +24,8 @@ export class MapComponent extends React.Component {
       keyword: "Food",
       places: [],
     };
+
+    /** set up the routing service instance with the current google object */
     RoutingService.setGoogle(window.google);
   }
 
@@ -88,6 +90,8 @@ export class MapComponent extends React.Component {
       end: null,
       places: [],
     });
+
+    /** get DirectionsResult object that contains the direction information */
     const overview_path = await RoutingService.calculateDistanceOverview(this.state.origin, this.state.destination)
       .catch((error) => {
         AppToaster.show({
@@ -96,10 +100,13 @@ export class MapComponent extends React.Component {
         });
         return null;
       });
+
     let validPath = true;
     if (!overview_path) {
       validPath = false;
     }
+
+    /** Intercept long path due to system limitation to prevent unsupported load time */
     if (overview_path.length > 70) {
       AppToaster.show({
         intent: Intent.DANGER,
@@ -107,6 +114,8 @@ export class MapComponent extends React.Component {
       });
       validPath = false;
     }
+
+    /** Fail the search to prevent searching and saving bad search metadata */
     if (!validPath) { 
       this.setState({ isLoading: false });
       return; 
@@ -117,12 +126,16 @@ export class MapComponent extends React.Component {
     for(const value of nearbyPlaces.values()) {
       this.state.places.push({name : value.name, location: value.geometry.location});
     }
+
+    /** Save the successful search metadata to the database */
     const routeData = {
       source: this.state.origin,
       destination: this.state.destination,
       keyword: this.state.keyword,
     }
     await HistoryServices.saveHistory(routeData);
+
+    /** Change the render state */
     this.setState({
       directions: directions,
       start: directions[0],
@@ -131,6 +144,10 @@ export class MapComponent extends React.Component {
     });
   }
 
+  /** 
+   * DEVONLY
+   * Show the search boundary of each LatLng location on the map component
+   */
    drawBoxes(boxes, map) {
     const boxpolys = new Array(boxes.length);
     for (var i = 0; i < boxes.length; i++) {
@@ -172,8 +189,9 @@ export class MapComponent extends React.Component {
   }
 
   buttonHandler = async () => {
-    if (!this.inputCheck()) { return; }
 
+    /** Validate input before searching*/
+    if (!this.inputCheck()) { return; }
     this.setState({
       isLoading: true,
     });
@@ -181,6 +199,10 @@ export class MapComponent extends React.Component {
     
   }
 
+  /**
+   * Validate the user input to intercept any potential problematic input that cannot
+   * be handled by the routing service
+   */
   inputCheck = () => {
     const { origin, destination, keyword } = this.state;
     if (origin.length === 0) {

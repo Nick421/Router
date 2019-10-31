@@ -1,5 +1,8 @@
 import * as Auth0 from "auth0-js";
 
+/**
+ * Initialise a new auth0 instance
+ */
 
 const auth0 = new Auth0.WebAuth({
   clientID: process.env.REACT_APP_CLIENT_ID,
@@ -51,6 +54,11 @@ export function userLogout() {
   });
 }
 
+/**
+ * Renew the authentication token and save the new valid login information
+ * to local storage with the callback function
+ */
+
 export function renewToken() {
   return new Promise((resolve, reject) => {
     if(localStorage.getItem(authFlag) !== "true") {
@@ -60,6 +68,10 @@ export function renewToken() {
     auth0.checkSession({}, renewTokenCallBack(resolve, reject));
   })
 }
+
+/**
+ * Save local login information from the authentication result object
+ */
 
 function renewTokenCallBack(resolve, reject) {
   return (err, authResult) => {
@@ -73,6 +85,10 @@ function renewTokenCallBack(resolve, reject) {
     return resolve(authResult);
   }
 }
+
+/**
+ * Intercept the auth0 callback hash from window url and validate the hash
+ */
 
 export function parseLogin() {
   return new Promise((resolve, reject) => {

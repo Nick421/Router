@@ -9,7 +9,10 @@ export default class Callback extends React.PureComponent {
     super();
     this.state = { isLoggedIn: false }
   }
-
+  
+  /** Initiate the axios instance header with the authentication bearer token and
+   *  redirect if the user is logged in
+   */
   render() {
     if(!this.state.isLoggedIn) {
       return (
@@ -25,6 +28,7 @@ export default class Callback extends React.PureComponent {
     }
   }
 
+  /** Parse and validate the callback url hash */
   async componentDidMount() {
     await auth.parseLogin();
     this.setState({ isLoggedIn: true });

@@ -98,6 +98,7 @@ export default class History extends React.Component {
 
   loadHistory = async () => {
     const historyList = (await HistoryServices.getAllHistory()) || [];
+    /** Sort to show the most recent ID first */
     this.setState({
       historyList: historyList.sort((a, b) => { return b.historyID - a.historyID; }),
       isLoading: false,

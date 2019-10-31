@@ -91,12 +91,14 @@ export default class Favourites extends React.Component {
   loadFavourites = async () => {
     const historyList = (await HistoryServices.getAllHistory()) || [];
     const favouriteList = [];
+    /** Save only favourite object that has a favourite flag */
     historyList.forEach((item) => {
       if (item.favourite) {
         favouriteList.push(item);
       }
     });
 
+    /** Sort to show the most recent ID first */
     this.setState({
       favouriteList: favouriteList.sort((a, b) => { return b.historyID - a.historyID; }),
       isLoading: false,

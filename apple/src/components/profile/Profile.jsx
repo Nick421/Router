@@ -57,6 +57,7 @@ export default class Profile extends React.PureComponent {
 
     getUserServiceData = async () => {
         const historyList = (await HistoryServices.getAllHistory()) || [];
+        /** Count the number of favourited route */
         let favouriteCount = 0;
         historyList.forEach((item) => {
             if (item.favourite) {
