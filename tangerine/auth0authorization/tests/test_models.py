@@ -3,7 +3,7 @@ from auth0authorization.models import Auth0User , History, RemoteUserManager
 from django.utils import timezone
 
 #Test the model for History
-class HistoryTests(TestCase):
+class modelTest(TestCase):
 
         #Set up data
    @classmethod
@@ -16,7 +16,20 @@ class HistoryTests(TestCase):
         histf1 = History.objects.create(historyID=4,userID=auth1, source="Redfern", destination="USYD", keyword="gym", date=timezone.now(), favourite=True)
         histf2 = History.objects.create(historyID=5,userID=auth2, source="UTS", destination="Burwood", keyword="gym", date=timezone.now(), favourite=True)
 
-#Test that history creation is correct
+   def test_user_creation(self):
+        user1 = Auth0User.objects.create_user("Admin", "password")
+        self.assertTrue(user1.userID, "Admin")
+
+   def test_user_creation_None(self):
+        with self.assertRaisesMessage(ValueError,'Users must have a subject' ):
+            Auth0User.objects.create_user(None, "Pas$w0rd")
+
+
+   def test_user_creation_empty_user(self):
+       with self.assertRaisesMessage(ValueError, 'Users must have a subject'):
+           Auth0User.objects.create_user("", "Pas$w0rd")
+
+    #Test that history creation is correct
    def test_history_creation(self):
         history = History.objects.create(historyID=6, userID=Auth0User.objects.get(userID=1), source="burwood", destination="redfern", keyword="bar", date=timezone.now())
         self.assertTrue(isinstance(history, History))
@@ -61,15 +74,16 @@ class HistoryTests(TestCase):
         expected = [hist1]
         self.assertEquals(favList,expected)
 
-   def delete_all_history():
-        History.objects.all().delete()
-        self.assertNull(History.objects.all())
+   def test_delete_all_history(self):
+        deleted = History.objects.all().delete()
+        self.assertEquals(deleted[0], 5)
+        self.assertEquals(len(History.objects.all()),0)
 
-   def delete_user_history():
+   def test_delete_user_history(self):
         auth1 = Auth0User.objects.get(userID=1)
-        user_history = History.objects.filter(userID=auth1)
-        user_history.delete()
-        self.assertNull(History.objects.filter(userID=auth1))
+        deleted = History.objects.filter(userID=auth1).delete()
+        self.assertEquals(deleted[0], 4)
+        self.assertEquals(len(History.objects.filter(userID=auth1)),0)
 
    def test_delete_favourite_list1(self):
         auth1 = Auth0User.objects.get(userID=1)
@@ -79,7 +93,7 @@ class HistoryTests(TestCase):
 
    def test_create_favourite_list1(self):
         auth1 = Auth0User.objects.get(userID=1)
-        favList = list(History.objects.filter(userID=auth1, favourite=False)).update(favourite=True)
+        favList = History.objects.filter(userID=auth1, favourite=False).update(favourite=True)
         returnedList = History.objects.filter(userID=auth1, favourite=True)
         self.assertEquals(len(returnedList), 4)
 
