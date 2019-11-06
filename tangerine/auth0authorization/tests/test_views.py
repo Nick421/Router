@@ -82,7 +82,7 @@ class viewsTest(APITestCase):
         self.client.login(username='username', password='Pas$w0rd')
         self.client.auth = HTTPBasicAuth('username','Pas$w0rd')
 
-        content_type = {'content-type': 'application/json', 'Accept': 'text/plain'}
+        headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
         parameter = 'test eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' \
                     '.eyJzdWIiOiJ1c2VybmFtZSIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6MTUxNjIzOTAyMn0' \
                     '.sljBMneck0XEniMp0H3zGGterOdOm5YA9MW4AQuE55o '
@@ -94,5 +94,5 @@ class viewsTest(APITestCase):
         json_data = json.dumps(data1)
         print(type(json_data))
 
-        response = self.client.post(reverse('private_history'), HTTP_AUTHORIZATION=parameter, data=json_data, content_type=content_type)
+        response = self.client.post(reverse('private_history'),HTTP_AUTHORIZATION=parameter,headers=headers,json=data1)
         self.assertEqual(response.status_code, 200)
