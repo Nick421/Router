@@ -34,7 +34,7 @@ class modelTest(TestCase):
     Test that History raises error message for null username
     """
 
-    def test_user_creation_None(self):
+    def test_user_creation_None_username(self):
         with self.assertRaisesMessage(ValueError, 'Users must have a subject'):
             Auth0User.objects.create_user(None, "Pas$w0rd")
 
@@ -44,7 +44,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_user_creation_empty_user(self):
+    def test_user_creation_empty_username_string(self):
         with self.assertRaisesMessage(ValueError, 'Users must have a subject'):
             Auth0User.objects.create_user("", "Pas$w0rd")
 
@@ -65,7 +65,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_history_user(self):
+    def test_get_history_userID(self):
         hist = History.objects.get(historyID=1)
         auth1 = Auth0User.objects.get(userID=1)
         expected_user = hist.userID
@@ -77,7 +77,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_history_source(self):
+    def test_get_history_source(self):
         hist = History.objects.get(historyID=1)
         expected_source = hist.source
         self.assertTrue(expected_source, "UTS")
@@ -88,7 +88,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_history_destination(self):
+    def test_get_history_destination(self):
         hist = History.objects.get(historyID=1)
         expected_destination = hist.destination
         self.assertTrue(expected_destination, "USYD")
@@ -99,7 +99,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_history_keyword(self):
+    def test_get_history_keyword(self):
         hist = History.objects.get(historyID=1)
         expected_keyword = hist.keyword
         self.assertTrue(expected_keyword, "gym")
@@ -110,7 +110,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_get_favourite_list1(self):
+    def test_get_favourite_list_userID1(self):
         auth1 = Auth0User.objects.get(userID=1)
         favList = list(History.objects.filter(userID=auth1, favourite=True))
         hist1 = History.objects.get(historyID=3)
@@ -124,7 +124,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_get_favourite_list_other_user(self):
+    def test_get_favourite_list_userID2(self):
         auth2 = Auth0User.objects.get(userID=2)
         favList = list(History.objects.filter(userID=auth2, favourite=True))
         hist1 = History.objects.get(historyID=5)
@@ -160,7 +160,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_delete_favourite_list1(self):
+    def test_delete_favourite_list_userID1(self):
         auth1 = Auth0User.objects.get(userID=1)
         favList = History.objects.filter(userID=auth1, favourite=True).update(favourite=False)
         returnedList = History.objects.filter(userID=auth1, favourite=True)
@@ -172,7 +172,7 @@ class modelTest(TestCase):
     """
 
 
-    def test_create_favourite_list1(self):
+    def test_create_favourite_list_userID1(self):
         auth1 = Auth0User.objects.get(userID=1)
         favList = History.objects.filter(userID=auth1, favourite=False).update(favourite=True)
         returnedList = History.objects.filter(userID=auth1, favourite=True)

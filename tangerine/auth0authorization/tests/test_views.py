@@ -16,7 +16,7 @@ class viewsTest(APITestCase):
     This method forces authentication and login and checks if the correct message and response is returned
     """
 
-    def test_login_forced(self):
+    def test_forced_login(self):
         self.client = APIClient()
         user = Auth0User.objects.create_superuser('username', 'Pas$w0rd')
         self.client.force_authenticate(user)
