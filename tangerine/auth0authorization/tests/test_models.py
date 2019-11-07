@@ -69,7 +69,7 @@ class modelTest(TestCase):
         hist = History.objects.get(historyID=1)
         auth1 = Auth0User.objects.get(userID=1)
         expected_user = hist.userID
-        self.assertTrue(expected_user.userID, auth1.userID)
+        self.assertEquals(expected_user.userID, auth1.userID)
 
 
     """
@@ -80,7 +80,7 @@ class modelTest(TestCase):
     def test_get_history_source(self):
         hist = History.objects.get(historyID=1)
         expected_source = hist.source
-        self.assertTrue(expected_source, "UTS")
+        self.assertEquals(expected_source, "UTS")
 
 
     """
@@ -91,7 +91,7 @@ class modelTest(TestCase):
     def test_get_history_destination(self):
         hist = History.objects.get(historyID=1)
         expected_destination = hist.destination
-        self.assertTrue(expected_destination, "USYD")
+        self.assertEquals(expected_destination, "USYD")
 
 
     """
@@ -102,7 +102,7 @@ class modelTest(TestCase):
     def test_get_history_keyword(self):
         hist = History.objects.get(historyID=1)
         expected_keyword = hist.keyword
-        self.assertTrue(expected_keyword, "gym")
+        self.assertEquals(expected_keyword, "gym")
 
 
     """
@@ -151,20 +151,45 @@ class modelTest(TestCase):
     def test_delete_user_history(self):
         auth1 = Auth0User.objects.get(userID=1)
         deleted = History.objects.filter(userID=auth1).delete()
-        self.assertEquals(deleted[0], 4)
+        self.assertEquals(deleted[0],4)
         self.assertEquals(len(History.objects.filter(userID=auth1)), 0)
 
+    """
+     Test that single favourites instance for a single user can be deleted correctly 
+    """
+
+
+    def test_delete_single_favourite_list_userID1(self):
+        auth1 = Auth0User.objects.get(userID=1)
+        favList = History.objects.filter(userID=auth1,  historyID=3).update(favourite=False)
+
+        expectedList = [History.objects.get(historyID=4)]
+        returnedList = list(History.objects.filter(userID=auth1, favourite=True))
+        self.assertEquals(returnedList,expectedList)
 
     """
      Test that favourites list for a single user can be deleted correctly 
     """
 
 
-    def test_delete_favourite_list_userID1(self):
+    def test_delete_all_favourite_list_userID1(self):
         auth1 = Auth0User.objects.get(userID=1)
         favList = History.objects.filter(userID=auth1, favourite=True).update(favourite=False)
         returnedList = History.objects.filter(userID=auth1, favourite=True)
         self.assertEquals(len(returnedList), 0)
+
+    """
+     Test that single favourites instance for a single user can be created correctly 
+    """
+
+
+    def test_create_single_favourite_list_userID1(self):
+        auth1 = Auth0User.objects.get(userID=1)
+        favList = History.objects.filter(userID=auth1, historyID=2).update(favourite=True)
+
+        expectedList = [History.objects.get(historyID=4), History.objects.get(historyID=3), History.objects.get(historyID=2)]
+        returnedList = list(History.objects.filter(userID=auth1, favourite=True))
+        self.assertEquals(returnedList, expectedList)
 
 
     """
@@ -176,4 +201,4 @@ class modelTest(TestCase):
         auth1 = Auth0User.objects.get(userID=1)
         favList = History.objects.filter(userID=auth1, favourite=False).update(favourite=True)
         returnedList = History.objects.filter(userID=auth1, favourite=True)
-        self.assertEquals(len(returnedList), 4)
+        self.assertEquals(len(returnedList),  len(History.objects.filter(userID=auth1)))

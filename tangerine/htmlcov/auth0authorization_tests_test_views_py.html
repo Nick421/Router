@@ -155,7 +155,7 @@
 <p id="t16" class="pln"><span class="str">    This method forces authentication and login and checks if the correct message and response is returned</span><span class="strut">&nbsp;</span></p>
 <p id="t17" class="pln"><span class="str">    """</span><span class="strut">&nbsp;</span></p>
 <p id="t18" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t19" class="stm run hide_run">    <span class="key">def</span> <span class="nam">test_login_forced</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t19" class="stm run hide_run">    <span class="key">def</span> <span class="nam">test_forced_login</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t20" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">client</span> <span class="op">=</span> <span class="nam">APIClient</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t21" class="stm run hide_run">        <span class="nam">user</span> <span class="op">=</span> <span class="nam">Auth0User</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">create_superuser</span><span class="op">(</span><span class="str">'username'</span><span class="op">,</span> <span class="str">'Pas$w0rd'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t22" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">client</span><span class="op">.</span><span class="nam">force_authenticate</span><span class="op">(</span><span class="nam">user</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
@@ -214,7 +214,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.4</a>,
-            created at 2019-11-07 00:04
+            created at 2019-11-07 13:22
         </p>
     </div>
 </div>
