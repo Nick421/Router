@@ -23,7 +23,7 @@ class modelTest(TestCase):
                                         date=timezone.now(), favourite=True)
 
     """
-    Test that History creation is correct
+    Test that User creation is correct and returns correct userID
     """
 
     def test_user_creation(self):
@@ -31,7 +31,7 @@ class modelTest(TestCase):
         self.assertTrue(user1.userID, "Admin")
 
     """
-    Test that History raises error message for null username
+    Test that User creation raises error message for null username
     """
 
     def test_user_creation_None_username(self):
@@ -40,7 +40,7 @@ class modelTest(TestCase):
 
 
     """
-       Test that History raises error message for empty username
+       Test that User creation raises error message for empty username
     """
 
 
