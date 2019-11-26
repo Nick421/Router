@@ -1,11 +1,18 @@
-# Recommender system along a route.
-We will make a web-app which given 2 places, recommend places of interest between those 2 places along the route that google map API returns.
+# Router
+A simple web application that recommends places of interest given a route. You can also favourite your routes to lesser the time taken to search again!
 
-# APIs
-* google maps API, Places & route
-* Routeboxer
+# Motivation
+Despite Google Maps being incredibly useful, it cannot recommend places of interest along a route, it can only recommend places near your current location. So we thought, it would be handy to know what restaurant are there along the way from place A to place B! Google Maps has indeed tried to implement this and their defunct library is the base of our web app!
 
-# Useful links
-* https://stackoverflow.com/questions/17283826/how-to-to-get-places-e-g-gas-stations-along-route-between-origin-and-destinati
-* https://www.cookieshq.co.uk/posts/search-places-along-a-route-with-google-maps-and-routboxer
-* https://stackoverflow.com/questions/38104776/nearby-places-distance-and-route-between-two-places-using-google-maps-api-for-w
+# Framework used
+ * React
+ * Django
+## Deployment config script
+ * Ansible
+ 
+# Live Demo
+ 
+Head to http://3.24.181.251 to try the website out!
+
+# Credits
+https://github.com/denissellu/routeboxer
